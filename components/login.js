@@ -1,13 +1,13 @@
-import React from 'react'
+import * as React from 'react';
 import { useQuery } from '@apollo/client';
 import { HI } from '../graphql/queries'
-import { 
-    StyleSheet, 
-    View, 
-    Text, 
-    TextInput, 
-    Button, 
-    ImageBackground, 
+import {
+    StyleSheet,
+    View,
+    Text,
+    TextInput,
+    Button,
+    ImageBackground,
     Image,
     Dimensions,
     TouchableOpacity
@@ -16,15 +16,14 @@ import {
 import bgImage from '../assets/fondo2.jpg'
 import logo from '../assets/logo1.png'
 
-const {width: WIDTH} =Dimensions.get('window')
-const {height: HEIGHT} = Dimensions.get('window')
+const { width: WIDTH } = Dimensions.get('window')
 
-export default function login() {
-    const { loading, error, data } = useQuery(HI)
-    
-    if (loading) return <Text>loading...</Text>
-    if (error) return <Text>Error :(</Text>
-    
+export default function login({ navigation }) {
+    // const { loading, error, data } = useQuery(HI)
+
+    // if (loading) return <Text>Holi jose :)...</Text>
+    // if (error) return <Text>Error :(</Text>
+
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             <View style={styles.logoContainer}>
@@ -32,7 +31,7 @@ export default function login() {
 
                 </Image>
             </View>
-            <Text>{data.Hi}</Text>
+            {/* <Text>{data.Hi}</Text> */}
             <View style={styles.form} >
                 <TextInput
                     style={styles.input}
@@ -43,10 +42,10 @@ export default function login() {
                     style={styles.input}
                     placeholder="Contraseña"
                     placeholderTextColor={'black'}
-                    secureTextEntry = {true}
+                    secureTextEntry={true}
                 />
             </View>
-            <TouchableOpacity style={styles.btnLogin}>
+            <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Home')}>
                 <Text style={styles.text}>
                     Iniciar sesión
                 </Text>
@@ -76,10 +75,10 @@ const styles = StyleSheet.create({
         color: 'black',
         textAlign: 'center',
     },
-    input:{
-        width: WIDTH -55,
+    input: {
+        width: WIDTH - 55,
         height: 45,
-        borderRadius:25,
+        borderRadius: 25,
         fontSize: 16,
         paddingLeft: 45,
         backgroundColor: 'rgba(255, 255, 255,0.5)',
@@ -87,9 +86,9 @@ const styles = StyleSheet.create({
         color: 'black',
     },
     btnLogin: {
-        width: WIDTH -55,
+        width: WIDTH - 55,
         height: 45,
-        borderRadius:25,
+        borderRadius: 25,
         backgroundColor: 'rgba(3, 151, 158, 0.65)',
         justifyContent: 'center',
         fontSize: 16,
