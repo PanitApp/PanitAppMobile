@@ -21,7 +21,7 @@ export default function Login() {
         password: "",
     })
 
-    const { login }  = useContext(AuthContext)
+    const { error, login }  = useContext(AuthContext)
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             <View style={styles.logoContainer}>
@@ -43,6 +43,7 @@ export default function Login() {
                     onChangeText={(val) => SetUsuario({...usuario, password:val})}
                 />
             </View>
+            {error?(<Text style={styles.errorMessage}>Ocurrio un error: {error}</Text>):(<View></View>)}
             <TouchableOpacity style={styles.btnLogin} onPress={() => login(usuario.username, usuario.password)}>
                 <Text style={styles.text}>
                     Iniciar sesión
@@ -91,5 +92,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         fontSize: 16,
         margin: 10
+    },
+    errorMessage: {
+        color:'red'
     }
 })

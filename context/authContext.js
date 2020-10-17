@@ -9,54 +9,69 @@ export default function AuthContextProvider( props ) {
     
 
     const [user, setUser] = useState(null)
+    const [error, setError] = useState("")
+    
     const [getUser] = useLazyQuery(GET_USER,  {
-        onCompleted: async (data) => {
+        onCompleted: (data) => {
             try {
-                await AsyncStorage.setItem('user', JSON.stringify(data.getUsuarioByUsername[0]))
+                if (data.getUsuarioByUsername.length <= 0){
+                    throw "Usuario no encontrado"
+                }
+                AsyncStorage.setItem('user', JSON.stringify(data.getUsuarioByUsername[0])).then(() => {
+                    setError("")
+                })
             } catch (e) {
                 // saving error
-                console.log("Ocurrio un error: " + error)
+                console.log("Ocurrio un error: " + e)
+                setError(e)
                 setUser(null)
             }    
             setUser(data.getUsuarioByUsername[0])    
         },
         onError: (err) => {
             console.log("Ocurrio un error: " + err)
-            setUser(null)    
-        }
+            setUser(null)
+            setError(err)
+        },
+        fetchPolicy: 'no-cache'
     });
 
     useEffect(() => {
-        async function checkUser(){
-            // check if the user is logged in
-            let storedUser = await AsyncStorage.getItem('user')
-            if (storedUser != null){
+        // check if the user is logged in
+        AsyncStorage.getItem('user').then(storedUser => {
+            if (storedUser){
                 setUser(JSON.parse(storedUser))
             }else{
                 setUser(null)
             }
-        }
-        checkUser()
+        })
     }, [])
+
+    useEffect(() => {
+        console.log(error)
+    }, [error])
 
     const authcontext = useMemo(() => ({
         user: user,
+        error: error,
         login: (username, password) => {
             // retrive the user and set the state
             getUser({ variables: { nombre_usuario: username } })
         },
-        logout: async () => {
+        logout: () => {
             try {
-                await AsyncStorage.removeItem('user')
-                setUser(null)
+                AsyncStorage.removeItem('user').then(() => {
+                    setUser(null)
+                })
             } catch(e) {
-                console.log("Ocurrio un error: " + error)
+                console.log("Ocurrio un error: " + e)
+                setError(error)
             }
         },
         register: () => {
             // create an user and set the state
         }
-    }))
+    }), [user])
 
     return (
         <AuthContext.Provider value={authcontext}>
