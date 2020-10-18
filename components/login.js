@@ -12,6 +12,8 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+
 
 import bgImage from '../assets/fondo2.jpg'
 import logo from '../assets/logo1.png'
@@ -45,7 +47,8 @@ export default function login({ navigation }) {
                     secureTextEntry={true}
                 />
             </View>
-            <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Home')}>
+            {/* <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Home')}> */}
+            <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
                 <Text style={styles.text}>
                     Iniciar sesión
                 </Text>
