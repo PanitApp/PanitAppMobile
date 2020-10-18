@@ -1,54 +1,54 @@
-import * as React from 'react';
-import { useQuery } from '@apollo/client';
-import { HI } from '../graphql/queries'
+import React, { useState, useContext } from 'react'
 import {
     StyleSheet,
     View,
     Text,
     TextInput,
-    Button,
     ImageBackground,
     Image,
     Dimensions,
     TouchableOpacity
 } from 'react-native'
-import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { DrawerActions } from '@react-navigation/native';
 
 
 import bgImage from '../assets/fondo2.jpg'
 import logo from '../assets/logo1.png'
+import { AuthContext } from '../context/authContext'
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function login({ navigation }) {
-    // const { loading, error, data } = useQuery(HI)
+export default function Login() {
+    const [usuario, SetUsuario] = useState({
+        username: "",
+        password: "",
+    })
 
-    // if (loading) return <Text>Holi jose :)...</Text>
-    // if (error) return <Text>Error :(</Text>
-
+    const { error, login }  = useContext(AuthContext)
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             <View style={styles.logoContainer}>
                 <Image source={logo} style={styles.logo}>
-
                 </Image>
             </View>
-            {/* <Text>{data.Hi}</Text> */}
             <View style={styles.form} >
                 <TextInput
                     style={styles.input}
                     placeholder="Usuario"
                     placeholderTextColor={'black'}
+                    onChangeText={(val) => SetUsuario({...usuario, username:val})}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Contraseña"
                     placeholderTextColor={'black'}
                     secureTextEntry={true}
+                    onChangeText={(val) => SetUsuario({...usuario, password:val})}
                 />
             </View>
-            {/* <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Home')}> */}
-            <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
+            {error?(<Text style={styles.errorMessage}>Ocurrio un error: {error}</Text>):(<View></View>)}
+            <TouchableOpacity style={styles.btnLogin} onPress={() => login(usuario.username, usuario.password)}>
+            {/* <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}> */}
                 <Text style={styles.text}>
                     Iniciar sesión
                 </Text>
@@ -96,5 +96,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         fontSize: 16,
         margin: 10
+    },
+    errorMessage: {
+        color:'red'
     }
 })

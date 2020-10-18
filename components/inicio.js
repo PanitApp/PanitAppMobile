@@ -1,34 +1,39 @@
 // In App.js in a new project
 
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  View,
-
-  TextInput,
-  ImageBackground,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-
-} from 'react-native';
-import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text, Left } from 'native-base';
+import React, { useContext } from 'react';
+import { View, Image, Dimensions, StyleSheet } from 'react-native';
+import { AuthContext } from '../context/authContext'
+import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text, Left, Title } from 'native-base';
 
 import { Col, Row, Grid } from "react-native-easy-grid";
 
-import logo from '../assets/logo1.png'
-import ScrollingCardExample from './card'
+import { DrawerActions } from '@react-navigation/native';
+import logo from '../assets/logo1.png';
+const { width: WIDTH } = Dimensions.get('window');
 
-const { width: WIDTH } = Dimensions.get('window')
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ name,props }) {
+
+  const { user, logout } = useContext(AuthContext)
+
 
   return (
     <Content>
+      <Header>
+        <Left>
+          <Button transparent onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
+            <Icon name='menu' />
+          </Button>
+        </Left>
+        <Body>
+          <Title>PanitaApp</Title>
+        </Body>
+        <Right />
+      </Header>
       <View style={styles.backgroundColor}>
         <View style={{ backgroundColor: 'white', width: WIDTH - 30, alignItems: 'center', flex: 1 }}>
           <Text style={styles.title}>¡ Bienvenido !</Text>
-          <Text>Mensaje cool de bienvenida</Text>
+          <Text>{user.nombres}</Text>
           <Image source={logo} style={styles.logo}></Image>
 
           {/* CURSOS */}
@@ -59,12 +64,12 @@ function HomeScreen({ navigation }) {
             </CardItem>
             <CardItem>
               <Left>
-              <Button rounded small  success>
-                <Text>4.5</Text>
-              </Button>
+                <Button rounded small success>
+                  <Text>4.5</Text>
+                </Button>
               </Left>
               <Body>
-              <Text>Nota trabajo X</Text>
+                <Text>Nota trabajo X</Text>
               </Body>
             </CardItem>
             <CardItem footer bordered>
@@ -82,21 +87,21 @@ function HomeScreen({ navigation }) {
               <Text style={styles.cardTitle}>Mis trabajos</Text>
             </CardItem>
             <CardItem >
-              <Icon active name="checkmark-circle" style={{color: 'red'}} />
+              <Icon active name="checkmark-circle" style={{ color: 'red' }} />
               <Text>Pendiente</Text>
               <Right >
                 <Icon name="arrow-round-forward" />
               </Right>
             </CardItem>
             <CardItem >
-              <Icon active name="checkmark-circle" style={{color: 'green'}} />
+              <Icon active name="checkmark-circle" style={{ color: 'green' }} />
               <Text>Revisado</Text>
               <Right >
                 <Icon name="arrow-round-forward" />
               </Right>
             </CardItem>
             <CardItem >
-              <Icon active name="checkmark-circle" style={{color: 'orange'}} />
+              <Icon active name="checkmark-circle" style={{ color: 'orange' }} />
               <Text>Entregado</Text>
               <Right >
                 <Icon name="arrow-round-forward" />
@@ -110,6 +115,15 @@ function HomeScreen({ navigation }) {
               </Body>
             </CardItem>
           </Card>
+
+        </View>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text>Home Screen</Text>
+
+          <Text> Usuario:{user.nombre_usuario}</Text>
+          <Button primary onPress={logout} >
+            <Text >Cerrar sesión</Text>
+          </Button>
 
         </View>
       </View>
