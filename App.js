@@ -9,15 +9,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import AuthContextProvider from './context/authContext'
 import Navigator from './routes/index'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Registro/>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
 const client = new ApolloClient({
     uri: 'http://ec2-54-146-196-241.compute-1.amazonaws.com:4000/',
     cache: new InMemoryCache()
