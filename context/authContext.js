@@ -1,13 +1,13 @@
 import React, { createContext, useMemo, useState, useEffect } from 'react'
 import AsyncStorage from '@react-native-community/async-storage';
 import { GET_USER } from '../graphql/queries'
-import { useLazyQuery } from '@apollo/client';
+import { CREATE_USER } from '../graphql/mutations'
+import { useLazyQuery, useMutation } from '@apollo/client';
 
 export const AuthContext = createContext()
 
 export default function AuthContextProvider( props ) {
     
-
     const [user, setUser] = useState(null)
     const [error, setError] = useState("")
     
@@ -36,6 +36,25 @@ export default function AuthContextProvider( props ) {
         fetchPolicy: 'no-cache'
     });
 
+    const [createUser] = useMutation(CREATE_USER, {
+        onCompleted: (data) => {
+            console.log(data.crearUsuario)
+            try {
+                AsyncStorage.setItem('user', JSON.stringify(data.crearUsuario)).then(() => {
+                    setError("")
+                })
+            } catch (err){
+                setError(e)
+                setUser(data.crearUsuario.nombre_usuario)
+            }
+        },
+        onError: (err) => {
+            console.log("Ocurrio un error en hook en onError: " + err)
+            setError(err)
+        }
+    })
+
+
     useEffect(() => {
         // check if the user is logged in
         AsyncStorage.getItem('user').then(storedUser => {
@@ -50,6 +69,7 @@ export default function AuthContextProvider( props ) {
     useEffect(() => {
         console.log(error)
     }, [error])
+
 
     const authcontext = useMemo(() => ({
         user: user,
@@ -68,8 +88,14 @@ export default function AuthContextProvider( props ) {
                 setError(error)
             }
         },
-        register: () => {
-            // create an user and set the state
+        register: (usuario) => {
+            createUser({ variables: { "usuario": { 
+                nombre_usuario: usuario.nombre_usuario,
+                contrasena: usuario.password,
+                nombres: usuario.nombres,
+                email: usuario.email,
+                rol: usuario.rol }
+            }})
         }
     }), [user])
 

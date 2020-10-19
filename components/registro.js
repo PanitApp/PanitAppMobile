@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { StyleSheet, View, Text, TextInput, ImageBackground, Image, Dimensions, Button, Alert} from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { AuthContext } from '../context/authContext'
 
 import bgImage from '../assets/fondo2.jpg'
 import logo from '../assets/logo1.png'
 
 const { width: WIDTH } = Dimensions.get('window')
-
 
 export default function Registro(){
     const [usuario, setUsuario] = useState({
@@ -16,21 +16,30 @@ export default function Registro(){
         email: "",
         rol: ""
     })
-
+    
+    const { error, register }  = useContext(AuthContext)
+    
     const roles = [
         {label: 'Profesor', value: 1, key: 1},
         {label: 'Estudiante', value: 2, key: 2}
     ]
 
     const submitRegistro = () => {
+        console.log("error" + error + "error")
         if ((usuario.nombre_usuario && usuario.password && usuario.nombres && usuario.email && usuario.rol) ==  "" ) {
             Alert.alert('Ops!', 'Por favor complete todos los campos');
             return;
         }
-        else{
+        if(error){
+            console.log("devuela el mf error" + error)
+            Alert.alert('Ops!', 'Parece que ocurrió un error (nombre de usuario ya existe)');
+            return;
+        }else{
+            register(usuario)
             Alert.alert('Bienvenido a PanitApp!', 'Usuario creado exitosamente!');
         }
     }
+
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             <View style={styles.logoContainer}>
