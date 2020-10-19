@@ -48,7 +48,6 @@ export default function Login() {
             </View>
             {error?(<Text style={styles.errorMessage}>Ocurrio un error: {error}</Text>):(<View></View>)}
             <TouchableOpacity style={styles.btnLogin} onPress={() => login(usuario.username, usuario.password)}>
-            {/* <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}> */}
                 <Text style={styles.text}>
                     Iniciar sesión
                 </Text>

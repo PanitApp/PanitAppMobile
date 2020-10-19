@@ -11,25 +11,17 @@ import { DrawerActions } from '@react-navigation/native';
 import logo from '../assets/logo1.png';
 const { width: WIDTH } = Dimensions.get('window');
 
+import Menu from './menu'
 
-function HomeScreen({ name,props }) {
+
+function HomeScreen({ navigation }) {
 
   const { user, logout } = useContext(AuthContext)
 
 
   return (
     <Content>
-      <Header>
-        <Left>
-          <Button transparent onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-            <Icon name='menu' />
-          </Button>
-        </Left>
-        <Body>
-          <Title>PanitaApp</Title>
-        </Body>
-        <Right />
-      </Header>
+      <Menu navigation={navigation} />
       <View style={styles.backgroundColor}>
         <View style={{ backgroundColor: 'white', width: WIDTH - 30, alignItems: 'center', flex: 1 }}>
           <Text style={styles.title}>¡ Bienvenido !</Text>
@@ -115,15 +107,6 @@ function HomeScreen({ name,props }) {
               </Body>
             </CardItem>
           </Card>
-
-        </View>
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text>Home Screen</Text>
-
-          <Text> Usuario:{user.nombre_usuario}</Text>
-          <Button primary onPress={logout} >
-            <Text >Cerrar sesión</Text>
-          </Button>
 
         </View>
       </View>
