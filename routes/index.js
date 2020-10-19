@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 
 export default function Navigator() {
 
-    const { user } = useContext(AuthContext)
+    const { isLogged } = useContext(AuthContext)
 
     return (
         <NavigationContainer>
@@ -21,6 +21,7 @@ export default function Navigator() {
                     {props => <Registro {...props} />}
                 </Stack.Screen>
                 {/* {user != null ? (
+                {isLogged ? (
                     <Stack.Screen name="Home">
                         {props => <Inicio {...props} />}
                     </Stack.Screen>

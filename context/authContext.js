@@ -8,29 +8,45 @@ export const AuthContext = createContext()
 
 export default function AuthContextProvider( props ) {
     
-    const [user, setUser] = useState(null)
+    const emptyUser = {
+        id: null,
+        nombre_usuario: "",
+        contrasena:"", 
+        nombres:"",
+        email:"",
+        rol: {
+            id:null,
+            nombre:""
+        }
+    }
+
+    const [user, setUser] = useState(emptyUser)
     const [error, setError] = useState("")
+    const [isLogged, setIsLogged] = useState(false)
     
     const [getUser] = useLazyQuery(GET_USER,  {
         onCompleted: (data) => {
             try {
                 if (data.getUsuarioByUsername.length <= 0){
-                    throw "Usuario no encontrado"
+                    setError("Usuario no encontrado")
+                    setUser(emptyUser)
+                    setIsLogged(false)
+                }else{
+                    AsyncStorage.setItem('user', JSON.stringify(data.getUsuarioByUsername[0])).then(() => {
+                        setError("")
+                        setIsLogged(true) 
+                    })
                 }
-                AsyncStorage.setItem('user', JSON.stringify(data.getUsuarioByUsername[0])).then(() => {
-                    setError("")
-                })
             } catch (e) {
                 // saving error
                 console.log("Ocurrio un error: " + e)
-                setError(e)
-                setUser(null)
             }    
-            setUser(data.getUsuarioByUsername[0])    
+            setUser(data.getUsuarioByUsername[0])
         },
         onError: (err) => {
             console.log("Ocurrio un error: " + err)
-            setUser(null)
+            setUser(emptyUser)
+            setIsLogged(false)
             setError(err)
         },
         fetchPolicy: 'no-cache'
@@ -60,8 +76,10 @@ export default function AuthContextProvider( props ) {
         AsyncStorage.getItem('user').then(storedUser => {
             if (storedUser){
                 setUser(JSON.parse(storedUser))
+                setIsLogged(true)
             }else{
-                setUser(null)
+                setUser(emptyUser)
+                setIsLogged(false)
             }
         })
     }, [])
@@ -74,6 +92,7 @@ export default function AuthContextProvider( props ) {
     const authcontext = useMemo(() => ({
         user: user,
         error: error,
+        isLogged: isLogged,
         login: (username, password) => {
             // retrive the user and set the state
             getUser({ variables: { nombre_usuario: username } })
@@ -81,7 +100,8 @@ export default function AuthContextProvider( props ) {
         logout: () => {
             try {
                 AsyncStorage.removeItem('user').then(() => {
-                    setUser(null)
+                    setUser(emptyUser)
+                    setIsLogged(false)
                 })
             } catch(e) {
                 console.log("Ocurrio un error: " + e)
@@ -97,7 +117,7 @@ export default function AuthContextProvider( props ) {
                 rol: usuario.rol }
             }})
         }
-    }), [user])
+    }))
 
     return (
         <AuthContext.Provider value={authcontext}>
