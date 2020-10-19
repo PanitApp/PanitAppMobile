@@ -1,4 +1,5 @@
 import React, { createContext, useMemo, useState, useEffect } from 'react'
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { GET_USER } from '../graphql/queries'
 import { CREATE_USER } from '../graphql/mutations'
@@ -57,16 +58,23 @@ export default function AuthContextProvider( props ) {
             console.log(data.crearUsuario)
             try {
                 AsyncStorage.setItem('user', JSON.stringify(data.crearUsuario)).then(() => {
+                    setIsLogged(true)
                     setError("")
+                    Alert.alert('Bienvenido a PanitApp!', 'Usuario creado exitosamente!');
                 })
             } catch (err){
-                setError(e)
-                setUser(data.crearUsuario.nombre_usuario)
+                setError("err")
+                setUser(emptyUser)
+                setIsLogged(false)
+                Alert.alert('Ops!', 'Error al traer la información, intenta nuevamente');
             }
         },
         onError: (err) => {
             console.log("Ocurrio un error en hook en onError: " + err)
-            setError(err)
+            setError("err")
+            setIsLogged(false)
+            setUser(emptyUser)
+            Alert.alert('Ops!', 'Parece que ocurrió un error, el nombre de usuario ya existe');
         }
     })
 

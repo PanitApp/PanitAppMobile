@@ -15,7 +15,7 @@ import { AuthContext } from '../context/authContext'
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function Login() {
+export default function Login( {navigation} ) {
     const [usuario, SetUsuario] = useState({
         username: "",
         password: "",
@@ -47,6 +47,11 @@ export default function Login() {
             <TouchableOpacity style={styles.btnLogin} onPress={() => login(usuario.username, usuario.password)}>
                 <Text style={styles.text}>
                     Iniciar sesión
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Registro')}>
+                <Text style={styles.text}>
+                    Crea una cuenta
                 </Text>
             </TouchableOpacity>
         </ImageBackground>

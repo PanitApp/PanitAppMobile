@@ -16,21 +16,20 @@ export default function Navigator() {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen name="Registro">
-                    {props => <Registro {...props} />}
-                </Stack.Screen>
-                {/* {user != null ? (
                 {isLogged ? (
-                    <Stack.Screen name="Home">
-                        {props => <Inicio {...props} />}
-                    </Stack.Screen>
-                ) : (
-                    <Stack.Screen name="Login">
-                        {props => <Login {...props} />}
-                    </Stack.Screen>
-                )} */}
+            <Stack.Navigator headerMode='none'>
+                <Stack.Screen name="Home">
+                    {props => <Inicio {...props} />}
+                </Stack.Screen>
             </Stack.Navigator>
+                ) : (
+                    <Stack.Navigator headerMode='none'>
+                        <Stack.Screen name="Login" component={Login} />
+                        <Stack.Screen name="Registro" component={Registro} />
+                    </Stack.Navigator>
+                    )
+                }
         </NavigationContainer>
+
     );
 }
