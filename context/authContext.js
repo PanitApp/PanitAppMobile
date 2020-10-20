@@ -41,7 +41,7 @@ export default function AuthContextProvider( props ) {
             } catch (e) {
                 // saving error
                 console.log("Ocurrio un error: " + e)
-            }    
+            }
             setUser(data.getUsuarioByUsername[0])
         },
         onError: (err) => {
@@ -68,6 +68,7 @@ export default function AuthContextProvider( props ) {
                 setIsLogged(false)
                 Alert.alert('Ops!', 'Error al traer la información, intenta nuevamente');
             }
+            setUser(data.crearUsuario)
         },
         onError: (err) => {
             console.log("Ocurrio un error en hook en onError: " + err)

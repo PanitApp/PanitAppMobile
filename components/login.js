@@ -49,8 +49,8 @@ export default function Login( {navigation} ) {
                     Iniciar sesión
                 </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnLogin} onPress={() => navigation.navigate('Registro')}>
-                <Text style={styles.text}>
+            <TouchableOpacity style={styles.btnRegistro} onPress={() => navigation.navigate('Registro')}>
+                <Text style={styles.textRegistro}>
                     Crea una cuenta
                 </Text>
             </TouchableOpacity>
@@ -100,5 +100,13 @@ const styles = StyleSheet.create({
     },
     errorMessage: {
         color:'red'
+    },
+    btnRegistro: {
+        color: 'black',
+        textAlign: 'center',
+        margin: 10,
+    },
+    textRegistro: {
+        color: 'rgba(3, 151, 158, 0.65)',
     }
 })
