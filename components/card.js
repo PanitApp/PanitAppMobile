@@ -18,7 +18,8 @@ export default function ScrollingCardExample() {
                 <Right>
                     <Icon name="arrow-forward" />
                 </Right>
-            </CardItem><CardItem>
+            </CardItem>
+            <CardItem>
                 <Icon active name="logo-googleplus" />
                 <Text>Google Plus</Text>
                 <Right>

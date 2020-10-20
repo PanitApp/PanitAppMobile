@@ -18,7 +18,7 @@ export default function Navigator({ navigation }) {
     return (
 
         <Stack.Navigator headerMode='none'>
-            {isLogged ? (
+            {!isLogged ? (
                 <Stack.Screen name="Home">
                     {props => <InicioDrawer {...props} />}
                 </Stack.Screen>
