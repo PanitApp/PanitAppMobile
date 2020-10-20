@@ -53,3 +53,13 @@ export const GET_CURSOS_BY_ESTUDIANTE = gql`
     }
   }
 `;
+
+export const GET_CURSOS_BY_PROFESOR = gql`
+  query getCursosByProfesor($id_profesor: ID!) {
+    getCursosByProfesor(id_profesor:$id_profesor){
+      id
+      nombre
+      descripcion
+    }
+  }
+`;
