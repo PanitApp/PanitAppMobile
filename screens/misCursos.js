@@ -4,14 +4,14 @@ import { ScrollView, StyleSheet, Dimensions } from 'react-native'
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function MisCursos({navigation}) {
+export default function MisCursos({navigation, props}) {
     return (
 
         <Card style={{ width: WIDTH - 60 }}>
             <CardItem header bordered>
                 <Text>Mis notas</Text>
             </CardItem>
-
+            {console.log(props)}
             <CardItem>
                 <Icon active name="logo-googleplus" />
                 <Text>Google Plus</Text>

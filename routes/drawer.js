@@ -1,9 +1,11 @@
 import 'react-native-gesture-handler';
 import React, { useContext } from 'react';
-import { createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem, } from '@react-navigation/drawer';
+import {
+    createDrawerNavigator,
+    DrawerContentScrollView,
+    DrawerItemList,
+    DrawerItem,
+} from '@react-navigation/drawer';
 import Inicio from '../components/inicio'
 import { AuthContext } from '../context/authContext'
 import { NavigationContainer } from '@react-navigation/native';
@@ -31,13 +33,15 @@ function CustomDrawerContent(props) {
 
 export default function Navigator({ navigation }) {
 
-    
+
     const dimensions = useWindowDimensions();
     return (
 
         <Drawer.Navigator drawerType='slide' backBehavior='initialRoute' initialRouteName="Inicio" drawerContent={props => <CustomDrawerContent {...props} />} >
             <Drawer.Screen name="Inicio" component={Inicio} />
-            <Drawer.Screen name="MisCursos" component={MisCursos} />
+            <Drawer.Screen name="MisCursos">
+                {props => <MisCursos {...props} />}
+            </Drawer.Screen>
         </Drawer.Navigator>
 
     );

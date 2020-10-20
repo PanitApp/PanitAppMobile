@@ -21,3 +21,35 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const GET_CURSOS = gql`
+  query getCursos {
+    getCursos{
+      id
+        nombre
+        descripcion
+        profesor {
+          id
+          nombre_usuario
+          nombres
+          email
+        }
+    }
+  }
+`;
+
+export const GET_CURSOS_BY_ESTUDIANTE = gql`
+  query getCursosByEstudiante($id_estudiante: ID!) {
+    getCursosByEstudiante(id_estudiante:$id_estudiante){
+      id
+      nombre
+      descripcion
+      profesor{
+        id
+        nombre_usuario
+        nombres
+        email
+      }
+    }
+  }
+`;

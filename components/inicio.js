@@ -9,6 +9,10 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 
 import { DrawerActions } from '@react-navigation/native';
 import logo from '../assets/logo1.png';
+
+import { useQuery } from '@apollo/client';
+import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE } from '../graphql/queries'
+
 const { width: WIDTH } = Dimensions.get('window');
 
 import Menu from './menu'
@@ -17,7 +21,9 @@ import Menu from './menu'
 function HomeScreen({ navigation }) {
 
   const { user, logout } = useContext(AuthContext)
-
+  const { loading, error, data } = useQuery(GET_CURSOS_BY_ESTUDIANTE, {variables: {id_estudiante: 1}})
+  if (loading) return <Text>loading...</Text>
+  if (error) return <Text>{console.log('error', error)}</Text>
 
   return (
     <Content>
@@ -26,6 +32,7 @@ function HomeScreen({ navigation }) {
         <View style={{ backgroundColor: 'white', width: WIDTH - 30, alignItems: 'center', flex: 1 }}>
           <Text style={styles.title}>¡ Bienvenido !</Text>
           <Text>{user.nombres}</Text>
+          <Text>{user.rol.nombre}</Text>
           <Image source={logo} style={styles.logo}></Image>
 
           {/* CURSOS */}
@@ -33,16 +40,27 @@ function HomeScreen({ navigation }) {
             <CardItem header bordered>
               <Text style={styles.cardTitle}>Mis cursos</Text>
             </CardItem>
-            <CardItem>
-              <Icon active name="school" />
-              <Text>Curso</Text>
-              <Right>
-                <Icon name="arrow-round-forward" />
-              </Right>
-            </CardItem>
+            {console.log('Inicio', data.getCursosByEstudiante)}
+
+            {
+              data.getCursosByEstudiante.filter(curso => curso!=null).map((curso, index) => {
+                return index < 3 && curso != null? 
+                <CardItem key={curso.id}>
+                  <Icon active name="school" />
+                  <Text>
+                    {curso.id}
+                  </Text>
+                  <Right>
+                    <Icon name="arrow-round-forward" />
+                  </Right>
+                </CardItem>
+                : null
+              })
+            }
+
             <CardItem footer bordered>
               <Body>
-                <Button transparent >
+                <Button transparent onPress={() => navigation.dispatch(DrawerActions.jumpTo('MisCursos'), {curso: 'Todos'})}>
                   <Text style={styles.cardTitle}>Ver todos mis cursos</Text>
                 </Button>
               </Body>
