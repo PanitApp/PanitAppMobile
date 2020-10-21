@@ -6,6 +6,7 @@ import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE, GET_CURSOS_BY_PROFESOR } from
 import {CREATE_CURSO} from '../graphql/mutations'
 import { CursosContext } from '../context/cursosContext';
 import FormCurso from './formCurso';
+import {globalStyles} from '../styles/globalStyles'
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -46,7 +47,7 @@ export default function MisCursos({ navigation }) {
                         return curso != null ?
                             <CardItem key={curso.id}>
                                 <Icon active name="school" />
-                                <Text>
+                                <Text style={globalStyles.cardItemTitle}>
                                     {curso.nombre}
                                 </Text>
                                 <Right>
