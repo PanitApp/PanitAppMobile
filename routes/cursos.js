@@ -12,23 +12,22 @@ import { Header, Content, Icon, Right, Body, Button, Left, Title } from 'native-
 
 const Stack = createStackNavigator();
 
-export default function Navigator({ navigation }) {
-
-    const { isLogged } = useContext(AuthContext)
+export default function Navigator({ navigation, route }) {
 
     return (
-
         <Stack.Navigator initialRouteName="MisCursos">
             <Stack.Screen
                 name="MisCursos"
                 component={MisCursos}
+                
                 options={{
                     headerLeft: () => (
                         <Button transparent onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
                             <Icon name='menu' style={{ color: '#03979E' }} />
                         </Button>
                     ),
-                    headerTitle: 'Mis cursos'
+                    headerTitle: 'Mis cursos',
+                    cursos:route.params
                 }}
             />
             <Stack.Screen

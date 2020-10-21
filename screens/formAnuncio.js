@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, TextInput, View, Text, Dimensions, TouchableOpacity } from 'react-native';
 import { Formik } from 'formik';
+import * as yup from 'yup'
 
 const { width: WIDTH } = Dimensions.get('window')
 /*
@@ -11,17 +12,25 @@ fecha (auto)
 */
 
 export default function formAnuncio({ crearAnuncio }) {
+
+  const { curso } = route.params;
+
+  const validationSchema = yup.object({
+    descripcion: yup.string().required()
+  })
+
   return (
     <View style={styles.container}>
       <Formik
+        validationSchema={validationSchema}
         initialValues={{
           descripcion: '',
           archivos: ''
         }}
         onSubmit={(values, actions) => {
           actions.resetForm();
-          let anuncio = {descripcion:values.descripcion, fecha_publicacion:new Date().toISOString(), archivos:values.archivos, id_curso: values.id_curso}
-          crearAnuncio({variables: anuncio})
+          let anuncio = { descripcion: values.descripcion, fecha_publicacion: new Date().toISOString(), archivos: values.archivos, id_curso: curso.id }
+          crearAnuncio({ variables: anuncio })
           console.log(values)
         }}
       >

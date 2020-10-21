@@ -48,7 +48,7 @@ export default function AuthContextProvider( props ) {
             setUser(emptyUser)
             setIsLogged(false)
             setError(err)
-        },
+        },  
         fetchPolicy: 'no-cache'
     });
 

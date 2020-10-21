@@ -1,34 +1,82 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text } from 'native-base';
-import { ScrollView, StyleSheet, Dimensions } from 'react-native'
+import { ScrollView, StyleSheet, Dimensions, Modal } from 'react-native'
+import { useMutation, useQuery } from '@apollo/client';
+import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE, GET_CURSOS_BY_PROFESOR } from '../graphql/queries'
+import {CREATE_CURSO} from '../graphql/mutations'
+import { CursosContext } from '../context/cursosContext';
+import FormCurso from './formCurso';
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function MisCursos({navigation}) {
+export default function MisCursos({ navigation }) {
+    const { cursos, setCursos } = useContext(CursosContext)
+    const [openModal, setOpenModal] = useState(false)
+
+
+    const [ crearCurso, _ ] = useMutation(CREATE_CURSO, {
+        onCompleted: (data) => {
+            setOpenModal(false)
+            setCursos( [...cursos, data.crearCurso] )
+            navigation.navigate('CursoDetalle', {curso: data.crearCurso})
+        },
+        onError: (err) => {
+            console.log(err)
+        }
+    })
+    
     return (
+        <Content>
 
-        <Card style={{ width: WIDTH - 60 }}>
-            <CardItem header bordered>
-                <Text>Mis notas</Text>
-            </CardItem>
+            <Modal animationType="slide" visible={openModal}>
+                <Button bordered onPress={() => setOpenModal(false)}>
+                    <Icon active name="close-circle" />
+                    <Text>Cerrar</Text>
+                </Button>
+                <FormCurso crearCurso={crearCurso} />
+            </Modal>
 
-            <CardItem>
-                <Icon active name="logo-googleplus" />
-                <Text>Google Plus</Text>
-                <Right>
-                    <Icon name="arrow-forward" onPress={() => navigation.push('CursoDetalle')}/>
-                </Right>
-            </CardItem>
+            <Card style={{ marginLeft:30, width: WIDTH - 60 }}>
+                <CardItem header bordered>
+                    <Text>Mis notas</Text>
+                </CardItem>
 
-            <CardItem footer bordered>
-                <Body>
-                    <Button bordered>
-                        <Text>Light</Text>
-                    </Button>
-                </Body>
+                {
+                    cursos.filter(curso => curso != null).map((curso, index) => {
+                        return curso != null ?
+                            <CardItem key={curso.id}>
+                                <Icon active name="school" />
+                                <Text>
+                                    {curso.nombre}
+                                </Text>
+                                <Right>
+                                    <Icon name="arrow-forward" onPress={() => navigation.navigate('CursoDetalle', {curso: curso})} />
+                                </Right>
+                            </CardItem>
+                            : null
+                    })
+                }
 
-            </CardItem>
-        </Card>
+                <CardItem footer bordered>
+                    <Body>
+                        <Button bordered onPress={() => setOpenModal(true)}>
+                            <Icon active name="add-circle" />
+                            <Text>Crear curso</Text>
+                        </Button>
+                    </Body>
+
+                </CardItem>
+            </Card>
+        </Content>
 
     );
 }
+
+const styles = StyleSheet.create({
+    btn:{
+        alignContent:"center",
+        flexDirection:"row",
+        flex:1,
+        backgroundColor:"green",    
+    }
+})
