@@ -1,16 +1,14 @@
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text } from 'native-base';
 import { ScrollView, StyleSheet, Dimensions } from 'react-native'
 import { useQuery } from '@apollo/client';
 import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE, GET_CURSOS_BY_PROFESOR } from '../graphql/queries'
+import { CursosContext } from '../context/cursosContext';
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function MisCursos({ navigation, props }) {
-    const { loading, error, data } = useQuery(GET_CURSOS_BY_PROFESOR, { variables: { id_profesor: 1 } })
-    if (loading) return <Text>loading...</Text>
-    if (error) return <Text>{console.log('error', error)}</Text>
-
+export default function MisCursos({ navigation }) {
+    const { cursos } = useContext(CursosContext)
     return (
 
         <Content>
@@ -20,7 +18,7 @@ export default function MisCursos({ navigation, props }) {
                 </CardItem>
 
                 {
-                    data.getCursosByProfesor.filter(curso => curso != null).map((curso, index) => {
+                    cursos.filter(curso => curso != null).map((curso, index) => {
                         return curso != null ?
                             <CardItem key={curso.id}>
                                 <Icon active name="school" />
