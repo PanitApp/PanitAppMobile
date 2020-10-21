@@ -19,6 +19,7 @@ const { width: WIDTH } = Dimensions.get('window');
 import Menu from './menu'
 
 import { globalStyles } from '../styles/globalStyles'
+import RNRestart from 'react-native-restart';
 
 
 export default function HomeScreen({ navigation }) {
