@@ -5,27 +5,32 @@ import Login from '../components/login'
 import Inicio from '../components/inicio'
 import { AuthContext } from '../context/authContext'
 import { NavigationContainer } from '@react-navigation/native';
-
+import InicioDrawer from './drawer'
+import { DrawerActions } from '@react-navigation/native';
+import { Button } from 'react-native'
 
 const Stack = createStackNavigator();
 
-export default function Navigator() {
+export default function Navigator({ navigation }) {
 
     const { isLogged } = useContext(AuthContext)
 
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                {isLogged ? (
-                    <Stack.Screen name="Home">
-                        {props => <Inicio {...props} />}
-                    </Stack.Screen>
-                ) : (
+
+        <Stack.Navigator headerMode='none'>
+            {isLogged ? (
+                <Stack.Screen name="Home">
+                    {props => <InicioDrawer {...props} />}
+                </Stack.Screen>
+            ) : (
                     <Stack.Screen name="Login">
                         {props => <Login {...props} />}
+                        {/* Registrarse */}
                     </Stack.Screen>
-                )}
-            </Stack.Navigator>
-        </NavigationContainer>
+
+                )
+            }
+        </Stack.Navigator>
+
     );
 }

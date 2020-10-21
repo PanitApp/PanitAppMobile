@@ -9,6 +9,9 @@ import {
     Dimensions,
     TouchableOpacity
 } from 'react-native'
+import { DrawerActions } from '@react-navigation/native';
+
+
 import bgImage from '../assets/fondo2.jpg'
 import logo from '../assets/logo1.png'
 import { AuthContext } from '../context/authContext'
