@@ -25,7 +25,6 @@ function HomeScreen({ navigation }) {
   const { loading, error, data } = useQuery(GET_CURSOS_BY_PROFESOR, { variables: { id_profesor: user.id } })
   if (loading) return <Text>loading...</Text>
   if (error) return <Text>{console.log('error', error)}</Text>
-  console.log(data)
 
 
 
@@ -44,7 +43,6 @@ function HomeScreen({ navigation }) {
             <CardItem header bordered>
               <Text style={styles.cardTitle}>Mis cursos</Text>
             </CardItem>
-            {console.log('Inicio', data.getCursosByEstudiante)}
 
             {
               data.getCursosByProfesor.filter(curso => curso != null).map((curso, index) => {
