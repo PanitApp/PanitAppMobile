@@ -8,9 +8,8 @@ import Inicio from '../components/inicio'
 import { AuthContext } from '../context/authContext'
 import { NavigationContainer } from '@react-navigation/native';
 import { useWindowDimensions } from 'react-native';
-// import MisCursos from '../components/card'
 import MisCursos from './cursos'
-
+import Anuncio from '../components/formAnuncio';
 
 const Drawer = createDrawerNavigator();
 
@@ -36,8 +35,9 @@ export default function Navigator({ navigation }) {
     return (
 
         <Drawer.Navigator drawerType='slide' backBehavior='initialRoute' initialRouteName="Inicio" drawerContent={props => <CustomDrawerContent {...props} />} >
-            <Drawer.Screen name="Inicio" component={Inicio} />
-            <Drawer.Screen name="MisCursos" component={MisCursos} />
+            <Drawer.Screen name="Anuncio" component={Anuncio} />
+            {/* <Drawer.Screen name="Inicio" component={Inicio} /> */}
+            {/* <Drawer.Screen name="MisCursos" component={MisCursos} /> */}
         </Drawer.Navigator>
 
     );
