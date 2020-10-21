@@ -1,8 +1,9 @@
 // In App.js in a new project
 
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Image, Dimensions, StyleSheet } from 'react-native';
 import { AuthContext } from '../context/authContext'
+import { CursosContext } from '../context/cursosContext'
 import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text, Left, Title } from 'native-base';
 
 import { Col, Row, Grid } from "react-native-easy-grid";
@@ -21,11 +22,7 @@ import Menu from './menu'
 function HomeScreen({ navigation }) {
 
   const { user, logout } = useContext(AuthContext)
-
-  const { loading, error, data } = useQuery(GET_CURSOS_BY_PROFESOR, { variables: { id_profesor: user.id } })
-  if (loading) return <Text>loading...</Text>
-  if (error) return <Text>{console.log('error', error)}</Text>
-
+  const { cursos } = useContext(CursosContext)
 
 
   return (
@@ -43,9 +40,8 @@ function HomeScreen({ navigation }) {
             <CardItem header bordered>
               <Text style={styles.cardTitle}>Mis cursos</Text>
             </CardItem>
-
             {
-              data.getCursosByProfesor.filter(curso => curso != null).map((curso, index) => {
+              cursos.filter(curso => curso != null).map((curso, index) => {
                 return index < 5 && curso != null ?
                   <CardItem key={curso.id}>
                     <Icon active name="school" />
@@ -53,7 +49,7 @@ function HomeScreen({ navigation }) {
                       {curso.nombre}
                     </Text>
                     <Right>
-                      <Icon name="arrow-round-forward" />
+                      <Icon name="arrow-round-forward" onPress={() => navigation.navigate('CursoDetalle', { curso: curso })} />
                     </Right>
                   </CardItem>
                   : null
@@ -62,7 +58,7 @@ function HomeScreen({ navigation }) {
 
             <CardItem footer bordered>
               <Body>
-                <Button transparent onPress={() => navigation.dispatch(DrawerActions.jumpTo('MisCursos'), { curso: 'Todos', user: user })}>
+                <Button transparent onPress={() => navigation.dispatch(DrawerActions.jumpTo('MisCursosDrawer', { cursos: cursos }))}>
                   <Text style={styles.cardTitle}>Ver todos mis cursos</Text>
                 </Button>
               </Body>

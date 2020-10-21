@@ -1,27 +1,18 @@
-import React, { useState } from 'react';
-import { View, Content, Card, CardItem, Icon, Right, Body, Button, Text } from 'native-base';
-import { StyleSheet, Dimensions, Modal, TouchableOpacity } from 'react-native'
-import { useQuery } from '@apollo/client';
+import React, { useContext, useState } from 'react';
+import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text } from 'native-base';
+import { ScrollView, StyleSheet, Dimensions, Modal } from 'react-native'
+import { useMutation, useQuery } from '@apollo/client';
 import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE, GET_CURSOS_BY_PROFESOR } from '../graphql/queries'
-import { CREATE_CURSO } from '../graphql/mutations'
+import {CREATE_CURSO} from '../graphql/mutations'
+import { CursosContext } from '../context/cursosContext';
 import FormCurso from './formCurso';
-import { useMutation } from '@apollo/client';
-
 
 const { width: WIDTH } = Dimensions.get('window')
 
-
-export default function MisCursos({ navigation, props }) {
-    
-
-    const [ cursos, setCursos ] = useState([])
-    const { loading, error } = useQuery(GET_CURSOS_BY_PROFESOR, { 
-        variables: { id_profesor: 1 },
-        onCompleted: (data) => {
-            setCursos(data.getCursosByProfesor)
-        }
-    })
+export default function MisCursos({ navigation }) {
+    const { cursos, setCursos } = useContext(CursosContext)
     const [openModal, setOpenModal] = useState(false)
+
 
     const [ crearCurso, _ ] = useMutation(CREATE_CURSO, {
         onCompleted: (data) => {
@@ -34,9 +25,6 @@ export default function MisCursos({ navigation, props }) {
         }
     })
     
-    if (loading) return <Text>loading...</Text>
-    if (error) return <Text>{console.log('error', error)}</Text>
-
     return (
         <Content>
 

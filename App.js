@@ -1,11 +1,12 @@
 import 'react-native-gesture-handler';
 
-import React, {useEffect, useState} from 'react';
-import * as Font from 'expo-font'; 
+import React, { useEffect, useState } from 'react';
+import * as Font from 'expo-font';
 
 
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
 import AuthContextProvider from './context/authContext'
+import CursosContextProvider from './context/cursosContext'
 import { NavigationContainer } from '@react-navigation/native';
 import LoginStack from './routes/index'
 
@@ -25,7 +26,7 @@ export default function App() {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
-    if(!fontsLoaded) {
+    if (!fontsLoaded) {
       Font.loadAsync({
         'Roboto_medium': require('./assets/fonts/Roboto-Medium.ttf')
       })
@@ -34,9 +35,9 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <AuthContextProvider>
-        <NavigationContainer>
-          <LoginStack />
-        </NavigationContainer>
+          <NavigationContainer>
+            <LoginStack />
+          </NavigationContainer>
       </AuthContextProvider>
     </ApolloProvider>
   );

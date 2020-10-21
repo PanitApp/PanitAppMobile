@@ -20,7 +20,6 @@ export default function MisCursos({ navigation, route }) {
                 <Text>
                     {curso.nombre}
                 </Text>
-                {console.log(curso)}
                 <Right>
                     <Icon name="arrow-forward" onPress={() => navigation.navigate('CursoDetalle', { curso: curso })} />
                 </Right>
@@ -31,7 +30,6 @@ export default function MisCursos({ navigation, route }) {
                         <Text>Light</Text>
                     </Button>
                 </Body>
-
             </CardItem>
         </Card>
 
