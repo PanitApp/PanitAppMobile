@@ -24,6 +24,7 @@ function HomeScreen({ navigation }) {
   const { user, logout } = useContext(AuthContext)
   const { cursos } = useContext(CursosContext)
 
+
   return (
     <Content>
       <Menu navigation={navigation} />

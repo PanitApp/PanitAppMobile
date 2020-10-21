@@ -8,11 +8,33 @@ import { CursosContext } from '../context/cursosContext';
 const { width: WIDTH } = Dimensions.get('window')
 
 export default function MisCursos({ navigation }) {
-    const { cursos } = useContext(CursosContext)
-    return (
+    const { cursos, setCursos } = useContext(CursosContext)
+    const [openModal, setOpenModal] = useState(false)
 
+
+    const [ crearCurso, _ ] = useMutation(CREATE_CURSO, {
+        onCompleted: (data) => {
+            setOpenModal(false)
+            setCursos( [...cursos, data.crearCurso] )
+            navigation.navigate('CursoDetalle', {curso: data.crearCurso})
+        },
+        onError: (err) => {
+            console.log(err)
+        }
+    })
+    
+    return (
         <Content>
-            <Card style={{ width: WIDTH - 60 }}>
+
+            <Modal animationType="slide" visible={openModal}>
+                <Button bordered onPress={() => setOpenModal(false)}>
+                    <Icon active name="close-circle" />
+                    <Text>Cerrar</Text>
+                </Button>
+                <FormCurso crearCurso={crearCurso} />
+            </Modal>
+
+            <Card style={{ marginLeft:30, width: WIDTH - 60 }}>
                 <CardItem header bordered>
                     <Text>Mis notas</Text>
                 </CardItem>
@@ -35,8 +57,9 @@ export default function MisCursos({ navigation }) {
 
                 <CardItem footer bordered>
                     <Body>
-                        <Button bordered>
-                            <Text>Light</Text>
+                        <Button bordered onPress={() => setOpenModal(true)}>
+                            <Icon active name="add-circle" />
+                            <Text>Crear curso</Text>
                         </Button>
                     </Body>
 
@@ -46,3 +69,12 @@ export default function MisCursos({ navigation }) {
 
     );
 }
+
+const styles = StyleSheet.create({
+    btn:{
+        alignContent:"center",
+        flexDirection:"row",
+        flex:1,
+        backgroundColor:"green",    
+    }
+})
