@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text } from 'native-base';
-import { ScrollView, StyleSheet, Dimensions } from 'react-native'
-import { useQuery } from '@apollo/client';
+import { ScrollView, StyleSheet, Dimensions, Modal } from 'react-native'
+import { useMutation, useQuery } from '@apollo/client';
 import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE, GET_CURSOS_BY_PROFESOR } from '../graphql/queries'
+import {CREATE_CURSO} from '../graphql/mutations'
 import { CursosContext } from '../context/cursosContext';
+import FormCurso from './formCurso';
 
 const { width: WIDTH } = Dimensions.get('window')
 
