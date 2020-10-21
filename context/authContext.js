@@ -75,7 +75,7 @@ export default function AuthContextProvider( props ) {
             setError("err")
             setIsLogged(false)
             setUser(emptyUser)
-            Alert.alert('Ops!', 'Parece que ocurrió un error, el nombre de usuario ya existe');
+            Alert.alert('Ops!', 'Parece que ocurrió un error, intenta nuevamente');
         }
     })
 
