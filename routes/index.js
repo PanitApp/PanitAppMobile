@@ -7,10 +7,13 @@ import { AuthContext } from '../context/authContext'
 import { NavigationContainer } from '@react-navigation/native';
 import Registro from '../components/registro' 
 
+import InicioDrawer from './drawer'
+import { DrawerActions } from '@react-navigation/native';
+import { Button } from 'react-native'
 
 const Stack = createStackNavigator();
 
-export default function Navigator() {
+export default function Navigator({ navigation }) {
 
     const { isLogged } = useContext(AuthContext)
 
@@ -19,7 +22,7 @@ export default function Navigator() {
                 {isLogged ? (
             <Stack.Navigator headerMode='none'>
                 <Stack.Screen name="Home">
-                    {props => <Inicio {...props} />}
+                    {props => <InicioDrawer {...props} />}
                 </Stack.Screen>
             </Stack.Navigator>
                 ) : (
