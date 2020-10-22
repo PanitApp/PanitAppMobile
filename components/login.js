@@ -18,7 +18,7 @@ import { AuthContext } from '../context/authContext'
 
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function Login() {
+export default function Login( {navigation} ) {
     const [usuario, SetUsuario] = useState({
         username: "",
         password: "",
@@ -50,6 +50,11 @@ export default function Login() {
             <TouchableOpacity style={styles.btnLogin} onPress={() => login(usuario.username, usuario.password)}>
                 <Text style={styles.text}>
                     Iniciar sesión
+                </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnRegistro} onPress={() => navigation.navigate('Registro')}>
+                <Text style={styles.textRegistro}>
+                    Crea una cuenta
                 </Text>
             </TouchableOpacity>
         </ImageBackground>
@@ -98,5 +103,13 @@ const styles = StyleSheet.create({
     },
     errorMessage: {
         color:'red'
+    },
+    btnRegistro: {
+        color: 'black',
+        textAlign: 'center',
+        margin: 10,
+    },
+    textRegistro: {
+        color: 'rgba(3, 151, 158, 0.65)',
     }
 })

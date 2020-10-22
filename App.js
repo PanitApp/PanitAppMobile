@@ -35,9 +35,7 @@ export default function App() {
   return (
     <ApolloProvider client={client}>
       <AuthContextProvider>
-          <NavigationContainer>
-            <LoginStack />
-          </NavigationContainer>
+        <LoginStack />
       </AuthContextProvider>
     </ApolloProvider>
   );
