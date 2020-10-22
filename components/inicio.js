@@ -61,7 +61,7 @@ export default function HomeScreen({ navigation }) {
 
             <CardItem footer bordered>
               <Body>
-                <Button transparent onPress={() => navigation.dispatch(DrawerActions.jumpTo('MisCursosDrawer', { cursos: cursos }))}>
+                <Button transparent onPress={() => navigation.dispatch(DrawerActions.jumpTo('Mis cursos', { cursos: cursos }))}>
                   <Text style={styles.cardTitle}>Ver todos mis cursos</Text>
                 </Button>
               </Body>
