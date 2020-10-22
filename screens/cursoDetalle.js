@@ -22,10 +22,10 @@ export default function MisCursos({ navigation, route }) {
             <InfoCurso curso={curso}/>
           </Tab>
           <Tab heading="Anuncios" tabStyle={{backgroundColor: '#03979E'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#037E85'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-            <AnunciosCurso />
+            <AnunciosCurso curso={curso}/>
           </Tab>
           <Tab heading="Estudiantes" tabStyle={{backgroundColor: '#03979E'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#037E85'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-            <EstudiantesCurso />
+            <EstudiantesCurso curso={curso}/>
           </Tab>
           
         </Tabs>
