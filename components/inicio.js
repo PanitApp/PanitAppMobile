@@ -33,10 +33,11 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.backgroundColor}>
         <View style={{ backgroundColor: 'white', width: WIDTH - 30, alignItems: 'center', flex: 1 }}>
           <Text style={styles.title}>¡ Bienvenido !</Text>
+          
+          <Image source={logo} style={styles.logo}></Image>
+
           <Text>{user.nombres}</Text>
           <Text>{user.rol.nombre}</Text>
-          <Text>{user.id}</Text>
-          <Image source={logo} style={styles.logo}></Image>
 
           {/* CURSOS */}
           <Card style={{ width: WIDTH - 60 }}>
@@ -47,12 +48,12 @@ export default function HomeScreen({ navigation }) {
               cursos.filter(curso => curso != null).map((curso, index) => {
                 return index < 5 && curso != null ?
                   <CardItem key={curso.id}>
-                    <Icon active name="school" />
+                    <Icon active name="school" style={{color:'#013d40'}}/>
                     <Text style={globalStyles.cardItemTitle}>
                       {curso.nombre}
                     </Text>
                     <Right>
-                      <Icon name="arrow-round-forward" onPress={() => navigation.navigate('CursoDetalle', { curso: curso })} />
+                      <Icon name="arrow-round-forward" style={{color: '#037E85'}} onPress={() => navigation.navigate('CursoDetalle', { curso: curso })}/>
                     </Right>
                   </CardItem>
                   : null
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: WIDTH - 90,
-    height: 120,
+    height: 150,
     margin: 20,
   },
   cardTitle: {
