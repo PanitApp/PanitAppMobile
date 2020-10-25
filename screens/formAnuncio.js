@@ -4,16 +4,8 @@ import { Formik } from 'formik';
 import * as yup from 'yup'
 
 const { width: WIDTH } = Dimensions.get('window')
-/*
-CREAR ANUNCIO
--descripción
-fecha (auto)
--archivos
-*/
 
-export default function formAnuncio({ crearAnuncio }) {
-
-  const { curso } = route.params;
+export default function formAnuncio({ crearAnuncio, curso }) {
 
   const validationSchema = yup.object({
     descripcion: yup.string().required()
@@ -29,7 +21,7 @@ export default function formAnuncio({ crearAnuncio }) {
         }}
         onSubmit={(values, actions) => {
           actions.resetForm();
-          let anuncio = { descripcion: values.descripcion, fecha_publicacion: new Date().toISOString(), archivos: values.archivos, id_curso: curso.id }
+          let anuncio = { descripcion: values.descripcion, fecha_publicacion: '2020-10-01T00:00:00.000Z', archivos: values.archivos, id_curso: curso.id }
           crearAnuncio({ variables: anuncio })
           console.log(values)
         }}

@@ -66,10 +66,10 @@ export const GET_CURSOS_BY_PROFESOR = gql`
 
 export const GET_ANUNCIOS_BY_CURSO_ID = gql`
   query getAnunciosByCursoId($curso_id: ID!){
-    getAnunciosByCurso(id_curso: 20){
-      id,
-      descripcion,
-      fecha_publicacion,
+    getAnunciosByCurso(id_curso:$id_curso){
+      id
+      descripcion
+      fecha_publicacion
       archivo
     }
   }

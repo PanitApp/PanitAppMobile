@@ -1,37 +1,28 @@
 import * as React from 'react';
-import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text } from 'native-base';
-import { ScrollView, StyleSheet, Dimensions } from 'react-native'
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { Container, Tab, Tabs } from 'native-base';
 
-const { width: WIDTH } = Dimensions.get('window')
 
+import InfoCurso from './infoCurso'
+import EstudiantesCurso from './estudiantesCurso'
+import AnunciosCurso from './anunciosCurso'
+ 
 export default function MisCursos({ navigation, route }) {
 
     const { curso } = route.params;
     return (
-        
-        <Card style={{ width: WIDTH - 60 }}>
-            <CardItem header bordered>
-                <Text>Curso Detalle!!!</Text>
-            </CardItem>
-            <CardItem key={curso.id}>
-                <Icon active name="school" />
-                <Text>
-                    {curso.nombre}
-                </Text>
-                <Right>
-                    <Icon name="arrow-forward" onPress={() => navigation.navigate('CursoDetalle', { curso: curso })} />
-                </Right>
-            </CardItem>
-            <CardItem footer bordered>
-                <Body>
-                    <Button bordered>
-                        <Text>Light</Text>
-                    </Button>
-                </Body>
-            </CardItem>
-        </Card>
-
+        <Container>
+        <Tabs tabBarPosition='bottom'>
+          <Tab heading="Información" tabStyle={{backgroundColor: '#03979E'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#037E85'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+            <InfoCurso curso={curso}/>
+          </Tab>
+          <Tab heading="Anuncios" tabStyle={{backgroundColor: '#03979E'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#037E85'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+            <AnunciosCurso curso = {curso}/>
+          </Tab>
+          <Tab heading="Estudiantes" tabStyle={{backgroundColor: '#03979E'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#037E85'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+            <EstudiantesCurso curso = {curso}/>
+          </Tab>
+          
+        </Tabs>
+      </Container>
     );
 }

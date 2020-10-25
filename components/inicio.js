@@ -1,6 +1,6 @@
 // In App.js in a new project
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { View, Image, Dimensions, StyleSheet } from 'react-native';
 import { AuthContext } from '../context/authContext'
 import { CursosContext } from '../context/cursosContext'
@@ -18,12 +18,14 @@ const { width: WIDTH } = Dimensions.get('window');
 
 import Menu from './menu'
 
+import { globalStyles } from '../styles/globalStyles'
+import RNRestart from 'react-native-restart';
 
-function HomeScreen({ navigation }) {
+
+export default function HomeScreen({ navigation }) {
 
   const { user, logout } = useContext(AuthContext)
-  const { cursos } = useContext(CursosContext)
-
+  const { cursos, setCursos } = useContext(CursosContext)
 
   return (
     <Content>
@@ -33,6 +35,7 @@ function HomeScreen({ navigation }) {
           <Text style={styles.title}>¡ Bienvenido !</Text>
           <Text>{user.nombres}</Text>
           <Text>{user.rol.nombre}</Text>
+          <Text>{user.id}</Text>
           <Image source={logo} style={styles.logo}></Image>
 
           {/* CURSOS */}
@@ -45,7 +48,7 @@ function HomeScreen({ navigation }) {
                 return index < 5 && curso != null ?
                   <CardItem key={curso.id}>
                     <Icon active name="school" />
-                    <Text>
+                    <Text style={globalStyles.cardItemTitle}>
                       {curso.nombre}
                     </Text>
                     <Right>
@@ -130,7 +133,6 @@ function HomeScreen({ navigation }) {
   );
 }
 
-export default HomeScreen;
 
 const styles = StyleSheet.create({
   backgroundColor: {
