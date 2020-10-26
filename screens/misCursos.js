@@ -1,23 +1,19 @@
 import React, { useContext, useState } from 'react';
-import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text, ListItem, Left, Switch, List, Input, Item, Form } from 'native-base';
-import { ScrollView, StyleSheet, Dimensions, Modal, View, Image } from 'react-native'
-import { useMutation, useQuery } from '@apollo/client';
-import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE, GET_CURSOS_BY_PROFESOR } from '../graphql/queries'
+import { Content, CardItem, Icon, Right, Body, Button, Text } from 'native-base';
+import { StyleSheet, Modal, View, Image } from 'react-native'
+import { useMutation } from '@apollo/client';
 import { CREATE_CURSO } from '../graphql/mutations'
 import { CursosContext } from '../context/cursosContext';
 import FormCurso from './formCurso';
 import { globalStyles } from '../styles/globalStyles'
 import { AuthContext } from '../context/authContext';
-
 import logo from '../assets/Panita.png'
 
-const { width: WIDTH } = Dimensions.get('window')
-
 export default function MisCursos({ navigation }) {
+
     const { cursos, setCursos } = useContext(CursosContext)
     const [openModal, setOpenModal] = useState(false)
-    const { user, logout } = useContext(AuthContext)
-
+    const { user } = useContext(AuthContext)
 
     const [crearCurso, _] = useMutation(CREATE_CURSO, {
         onCompleted: (data) => {
@@ -67,11 +63,7 @@ export default function MisCursos({ navigation }) {
                         : null
                 })
             }
-
-
-
         </Content>
-
     );
 }
 

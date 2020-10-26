@@ -37,6 +37,12 @@ export const CREAR_ANUNCIO = gql`
     }
 `;
 
+export const DELETE_ANUNCIO = gql`
+  mutation delete_anuncio($id: ID!){
+    eliminarAnuncio(id: $id)
+  }
+`;
+
 export const CREATE_CURSO = gql`
   mutation create_curso($nombre: String!, $descripcion: String!, $profesor: Int!) {
     crearCurso(curso: {

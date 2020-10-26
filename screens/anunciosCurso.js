@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FormAnuncio from './formAnuncio';
 import logo from '../assets/Cursos.png'
 
-import { Card, CardItem, Icon, Body, Button, Text, Content, Container } from 'native-base';
+import { Card, CardItem, Icon, Body, Button, Text, Content, Container, Right } from 'native-base';
 import { Dimensions, TouchableWithoutFeedback, Keyboard, View, Modal, StyleSheet, Image} from 'react-native';
 
 import { useMutation, useQuery } from '@apollo/client';
@@ -71,10 +71,13 @@ export default function anunciosCurso({ curso, navigation }) {
                     <CardItem key={anuncio.id}>
                         <Icon active name="alarm" style={{ color: '#013d40' }}/>
                         <Body>
-                            <Text style={globalStyles.cardItemTitle}> 
+                            <Text style={globalStyles.cardItemTitle} onPress={() => navigation.navigate('anuncioDetalle', { anuncio: anuncio })}> 
                                 Anuncio #{index + 1}: {anuncio.descripcion}
                             </Text>
                         </Body>
+                        <Right>
+                                <Icon name="build" style={{ color: '#037E85' }} onPress={() => navigation.navigate('anuncioDetalle', { anuncio: anuncio })} />
+                            </Right>
                     </CardItem>
                 ))}
             </Content>
