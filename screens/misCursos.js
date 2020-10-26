@@ -1,8 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text, ListItem, Left, Switch, List, Input, Item, Form } from 'native-base';
 import { ScrollView, StyleSheet, Dimensions, Modal, View, Image } from 'react-native'
-import { useMutation, useQuery } from '@apollo/client';
-import { HI, GET_CURSOS, GET_CURSOS_BY_ESTUDIANTE, GET_CURSOS_BY_PROFESOR } from '../graphql/queries'
+import { useMutation } from '@apollo/client';
 import { CREATE_CURSO } from '../graphql/mutations'
 import { CursosContext } from '../context/cursosContext';
 import FormCurso from './formCurso';

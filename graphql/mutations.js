@@ -15,6 +15,7 @@ export const CREATE_USER = gql`
         }
     }
 `;
+
 export const CREATE_CURSO = gql`
   mutation create_curso($nombre: String!, $descripcion: String!, $profesor: Int!) {
     crearCurso(curso: {
@@ -35,6 +36,18 @@ export const CREATE_CURSO = gql`
   }
 `;
 
+export const EDIT_USER = gql`
+  mutation ($id: Int!, $usuario: RegisterInput){
+    actualizarUsuario(id: $id, usuario: $usuario){
+      id
+      nombre_usuario
+      contrasena
+      nombres
+      email
+      rol
+    }
+  }
+`;
 
 export const ADD_ESTUDIANTE = gql`
   mutation crearEstudianteCurso($id_estudiante: ID!, $id_curso: ID!) {
