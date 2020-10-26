@@ -4,7 +4,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { View, Image, Dimensions, StyleSheet } from 'react-native';
 import { AuthContext } from '../context/authContext'
 import { CursosContext } from '../context/cursosContext'
-import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text, Left, Title } from 'native-base';
+import { Container, Header, Content, Card, CardItem, Icon, Right, Body, Button, Text, Left, Title, Fab } from 'native-base';
 
 import { Col, Row, Grid } from "react-native-easy-grid";
 
@@ -26,6 +26,7 @@ export default function HomeScreen({ navigation }) {
 
   const { user, logout } = useContext(AuthContext)
   const { cursos, setCursos } = useContext(CursosContext)
+  const [active, setActive] = useState(false)
 
   return (
     <Content>
@@ -33,7 +34,7 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.backgroundColor}>
         <View style={{ backgroundColor: 'white', width: WIDTH - 30, alignItems: 'center', flex: 1 }}>
           <Text style={styles.title}>¡ Bienvenido !</Text>
-          
+
           <Image source={logo} style={styles.logo}></Image>
 
           <Text>{user.nombres}</Text>
@@ -48,12 +49,12 @@ export default function HomeScreen({ navigation }) {
               cursos.filter(curso => curso != null).map((curso, index) => {
                 return index < 5 && curso != null ?
                   <CardItem key={curso.id}>
-                    <Icon active name="school" style={{color:'#013d40'}}/>
+                    <Icon active name="school" style={{ color: '#013d40' }} />
                     <Text style={globalStyles.cardItemTitle}>
                       {curso.nombre}
                     </Text>
                     <Right>
-                      <Icon name="arrow-round-forward" style={{color: '#037E85'}} onPress={() => navigation.navigate('CursoDetalle', { curso: curso })}/>
+                      <Icon name="arrow-round-forward" style={{ color: '#037E85' }} onPress={() => navigation.navigate('CursoDetalle', { curso: curso })} />
                     </Right>
                   </CardItem>
                   : null
@@ -129,6 +130,17 @@ export default function HomeScreen({ navigation }) {
           </Card>
 
         </View>
+      </View>
+      <View style={{ flex: 1 }}>
+        <Fab
+          active={active}
+          direction="up"
+          containerStyle={{}}
+          style={{ backgroundColor: '#037E85' }}
+          position="bottomRight"
+          onPress={() => navigation.dispatch(DrawerActions.jumpTo('Chats', { cursos: cursos }))}>
+          <Icon name="chatbubbles" />
+        </Fab>
       </View>
     </Content>
   );
