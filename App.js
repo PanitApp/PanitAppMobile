@@ -13,7 +13,7 @@ import LoginStack from './routes/index'
 import NavigatorDrawer from './routes/drawer'
 
 const client = new ApolloClient({
-  uri: 'http://ec2-3-236-78-82.compute-1.amazonaws.com:4000/',
+  uri: 'http://ec2-3-237-39-139.compute-1.amazonaws.com:4000/',
   cache: new InMemoryCache(),
   defaultOptions:{
     query:{
