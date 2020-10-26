@@ -90,7 +90,7 @@ export const GET_CURSOS_BY_PROFESOR = gql`
 `;
 
 export const GET_ANUNCIOS_BY_CURSO_ID = gql`
-  query getAnunciosByCursoId($curso_id: ID!){
+  query getAnunciosByCursoId($id_curso: ID!){
     getAnunciosByCurso(id_curso:$id_curso){
       id
       descripcion

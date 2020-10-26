@@ -3,15 +3,16 @@ import FormAnuncio from './formAnuncio';
 import logo from '../assets/Cursos.png'
 
 import { Card, CardItem, Icon, Body, Button, Text, Content, Container } from 'native-base';
-import { Dimensions, TouchableWithoutFeedback, Keyboard, View, Modal, StyleSheet, Image } from 'react-native';
+import { Dimensions, TouchableWithoutFeedback, Keyboard, View, Modal, StyleSheet, Image} from 'react-native';
 
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ANUNCIOS_BY_CURSO_ID } from '../graphql/queries';
 import { CREAR_ANUNCIO } from '../graphql/mutations';
 
+import { globalStyles } from '../styles/globalStyles';
 const { width: WIDTH } = Dimensions.get('window')
 
-export default function anunciosCurso({ curso }) {
+export default function anunciosCurso({ curso, navigation }) {
 
     const [openModal, setOpenModal] = useState(false)
     const [anuncios, setAnuncios] = useState([])
@@ -20,6 +21,7 @@ export default function anunciosCurso({ curso }) {
         onCompleted: (data) => {
             setOpenModal(false)
             setAnuncios([...anuncios, data.crearAnuncio])
+            navigation.navigate('anunciosCurso')
         },
         onError: (err) => {
             console.log(err)
@@ -54,29 +56,27 @@ export default function anunciosCurso({ curso }) {
                 </View>
                 <Card style={{ width: WIDTH }} transparent>
                     <CardItem >
-                        <Text style={styles.texto}>asd</Text>
+                        <Text style={styles.texto}>Acá encontraras todos los anuncios del curso: {curso.nombre}</Text>
                     </CardItem>
                 </Card>
                 <View>
                     <Body>
                         <Button primary onPress={() => setOpenModal(true)} style={styles.btn}>
-                            <Icon active name="add-circle"/>
+                            <Icon active name="add-circle" />
                             <Text>Nuevo anuncio</Text>
                         </Button>
                     </Body>
                 </View>
-                {
-                    anuncios.map((anuncio) => (
-                        <CardItem key={anuncio.id}>
-                            <Icon active name="alarm" />
-                            <Body>
-                                <Text>
-                                    Descripcion: {anuncio.descripcion}
-                                </Text>
-                            </Body>
-                        </CardItem>
-                    ))
-                }
+                {anuncios.map( (anuncio, index) => (
+                    <CardItem key={anuncio.id}>
+                        <Icon active name="alarm" style={{ color: '#013d40' }}/>
+                        <Body>
+                            <Text style={globalStyles.cardItemTitle}> 
+                                Anuncio #{index + 1}: {anuncio.descripcion}
+                            </Text>
+                        </Body>
+                    </CardItem>
+                ))}
             </Content>
         </Container>
     );

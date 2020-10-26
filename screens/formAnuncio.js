@@ -17,14 +17,14 @@ export default function formAnuncio({ crearAnuncio, curso }) {
         style={styles.form}
         validationSchema={validationSchema}
         initialValues={{
-          descripcion: '',
-          archivos: ''
+          descripcion: "",
+          archivos: "archivos"
         }}
         onSubmit={(values, actions) => {
+          console.log(anuncio)
           actions.resetForm();
           let anuncio = { descripcion: values.descripcion, fecha_publicacion: '2020-10-01T00:00:00.000Z', archivos: values.archivos, id_curso: curso.id }
           crearAnuncio({ variables: anuncio })
-          console.log(values)
         }}
       >
         {(props) => (
@@ -34,6 +34,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
               style={styles.input}
               placeholder='Descripcion del anuncio'
               onChangeText={props.handleChange('descripcion')}
+              onBlur={props.handleBlur('descripcion')}
               value={props.values.descripcion}
             />
             <TouchableOpacity style={styles.btnLogin}>
