@@ -39,7 +39,7 @@ export default function Navigator({ navigation }) {
         <CursosContextProvider>
             <Drawer.Navigator drawerType='slide' backBehavior='initialRoute' initialRouteName="Inicio" drawerContent={props => <CustomDrawerContent {...props} />} >
                 <Drawer.Screen name="Inicio" component={Inicio} />
-                <Drawer.Screen name="MisCursosDrawer">
+                <Drawer.Screen name="Mis cursos">
                     {props => <MisCursos {...props} />}
                 </Drawer.Screen>
             </Drawer.Navigator>

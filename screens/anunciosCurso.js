@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Card, CardItem, Icon, Body, Button, Text, Content } from 'native-base';
-import { useMutation, useQuery } from '@apollo/client';
-import { Dimensions, TouchableWithoutFeedback, Keyboard, View, Modal} from 'react-native'
-import { GET_ANUNCIOS_BY_CURSO_ID } from '../graphql/queries';
-import { CREAR_ANUNCIO } from '../graphql/mutations'
 import FormAnuncio from './formAnuncio';
+import logo from '../assets/Cursos.png'
+
+import { Card, CardItem, Icon, Body, Button, Text, Content, Container } from 'native-base';
+import { Dimensions, TouchableWithoutFeedback, Keyboard, View, Modal, StyleSheet, Image } from 'react-native';
+
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_ANUNCIOS_BY_CURSO_ID } from '../graphql/queries';
+import { CREAR_ANUNCIO } from '../graphql/mutations';
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -24,34 +27,46 @@ export default function anunciosCurso({ curso }) {
     })
 
     const { loading } = useQuery(GET_ANUNCIOS_BY_CURSO_ID, {
-        variables: {id_curso: curso.id},
+        variables: { id_curso: curso.id },
         onCompleted: data => setAnuncios(data.getAnunciosByCurso),
-        onError: err => console.log(err) 
+        onError: err => console.log(err)
     })
 
-    console.log(curso)
+    console.log(anuncios)
+
     return (
-        <Content>
-
-            <Modal animationType="slide" visible={openModal}>
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                    <View>
-                        <Button bordered onPress={() => setOpenModal(false)}>
-                            <Icon active name="close-circle" />
-                            <Text>Cerrar</Text>
+        <Container>
+            <Content>
+                <Modal animationType="slide" visible={openModal}>
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                        <View>
+                            <Button bordered onPress={() => setOpenModal(false)}>
+                                <Icon active name="close-circle" />
+                                <Text>Cerrar</Text>
+                            </Button>
+                            <FormAnuncio crearAnuncio={crearAnuncio} curso={curso} />
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+                <View style={styles.logoContainer}>
+                    <Image source={logo} style={styles.logo} />
+                    <Text style={styles.title}>Anuncios</Text>
+                </View>
+                <Card style={{ width: WIDTH }} transparent>
+                    <CardItem >
+                        <Text style={styles.texto}>asd</Text>
+                    </CardItem>
+                </Card>
+                <View>
+                    <Body>
+                        <Button primary onPress={() => setOpenModal(true)} style={styles.btn}>
+                            <Icon active name="add-circle"/>
+                            <Text>Nuevo anuncio</Text>
                         </Button>
-                        <FormAnuncio crearAnuncio={crearAnuncio} curso={curso} />
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-
-            <Card style={{ marginLeft: 30, width: WIDTH - 60 }}>
-                <CardItem header bordered>
-                    <Text>Anuncios: {curso.nombre}</Text>
-                </CardItem>
+                    </Body>
+                </View>
                 {
-                    //map
-                    anuncios.map(anuncio => (
+                    anuncios.map((anuncio) => (
                         <CardItem key={anuncio.id}>
                             <Icon active name="alarm" />
                             <Body>
@@ -62,17 +77,32 @@ export default function anunciosCurso({ curso }) {
                         </CardItem>
                     ))
                 }
-                <CardItem footer bordered>
-                    <Body>
-                        <Button bordered onPress={() => setOpenModal(true)}>
-                            <Icon active name="add-circle" />
-                            <Text>Nuevo anuncio</Text>
-                        </Button>
-                    </Body>
-
-                </CardItem>
-            </Card>
-        </Content>
-
+            </Content>
+        </Container>
     );
 }
+
+
+const styles = StyleSheet.create({
+    btn: {
+        margin: 20,
+        backgroundColor: '#03979E'
+    },
+    logoContainer: {
+        alignItems: 'center',
+        margin: 10
+    },
+    logo: {
+        width: 200,
+        height: 120,
+    },
+    title: {
+        color: "#03979E",
+        fontSize: 40,
+        textAlign: 'center'
+    },
+    texto: {
+        fontSize: 20,
+        color: 'gray',
+    }
+})

@@ -14,6 +14,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
   return (
     <View style={styles.container}>
       <Formik
+        style={styles.form}
         validationSchema={validationSchema}
         initialValues={{
           descripcion: '',
@@ -66,22 +67,24 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ddd',
+    justifyContent: 'center',
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
-    height: 150
+    height: 150,
+    margin: 20
   },
   text: {
-    color: 'black',
+    color: 'white',
     textAlign: 'center',
   },
   btnLogin: {
     width: WIDTH - 55,
     height: 45,
-    borderRadius: 25,
-    backgroundColor: 'rgba(3, 151, 158, 0.65)',
+    borderRadius: 5,
+    backgroundColor: '#037E85',
     justifyContent: 'center',
     fontSize: 16,
-    margin: 10
+    margin: 5
   }
 })

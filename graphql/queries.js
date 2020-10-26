@@ -22,6 +22,31 @@ export const GET_USER = gql`
   }
 `;
 
+export const GET_ESTUDIANTE = gql`
+  query get_estudiante($nombre_usuario: String!) {
+    getUsuarioByUsername(nombre_usuario:$nombre_usuario){
+      id
+      nombre_usuario
+      nombres
+      email    
+      rol{
+          id
+      }
+    }
+  }
+`;
+
+export const GET_ESTUDIANTES_BY_CURSO = gql`
+  query getEstudiantesByCurso($id_curso: ID!) {
+    getEstudiantesByCurso(id_curso: $id_curso){
+      id
+      nombre_usuario
+      nombres
+      email    
+    }
+  }
+`;
+
 export const GET_CURSOS = gql`
   query getCursos {
     getCursos{

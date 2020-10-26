@@ -21,7 +21,6 @@ export default function MisCursos({ navigation, route }) {
           <Tab heading="Estudiantes" tabStyle={{backgroundColor: '#03979E'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#037E85'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
             <EstudiantesCurso curso = {curso}/>
           </Tab>
-          
         </Tabs>
       </Container>
     );

@@ -9,7 +9,7 @@ export default function Menu({ navigation }) {
       <Header style={{ backgroundColor: 'white' }}>
         <Left>
           <Button transparent onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}>
-            <Icon name='menu' style={{ color: '#03979E' }} />
+            <Icon name='menu' style={{ color: '#037E85' }} />
           </Button>
         </Left>
         <Right />
