@@ -12,6 +12,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useWindowDimensions } from 'react-native';
 import MisCursos from './cursos';
 import MisDatos from './editarMisDatos';
+import Chats from './chats'
 import CursosContextProvider from '../context/cursosContext';
 
 
@@ -46,6 +47,9 @@ export default function Navigator({ navigation }) {
                 <Drawer.Screen name="Editar mis datos">
                         {props => <MisDatos {...props} />}
                     </Drawer.Screen>
+                <Drawer.Screen name="Chats">
+                    {props => <Chats {...props} />}
+                </Drawer.Screen>
             </Drawer.Navigator>
         </CursosContextProvider>
     );

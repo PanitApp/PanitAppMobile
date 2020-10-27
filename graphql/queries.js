@@ -88,3 +88,50 @@ export const GET_CURSOS_BY_PROFESOR = gql`
     }
   }
 `;
+
+export const GET_CHATS = gql`
+  query getChatByUser($userId: Int!) {
+    getChatByUser(userId:$userId){
+      _id
+      nombre
+      participantes{
+        id
+        nombre_usuario
+        nombres
+        rol{
+          id
+          nombre
+        }
+      }
+    }
+  }
+`;
+
+export const GET_MENSAJES_BY_CHAT = gql`
+  query getMensajesChat($chatId: String!) {
+    getMensajesChat(chatId:$chatId){
+      _id
+      fecha
+      contenido
+      destacado
+      fijado
+      usuario{
+        id
+        nombre_usuario
+        nombres
+      }
+    }
+  }
+`;
+
+export const GET_ANUNCIOS_BY_CURSO_ID = gql`
+  query getAnunciosByCursoId($id_curso: ID!){
+    getAnunciosByCurso(id_curso:$id_curso){
+      id
+      descripcion
+      fecha_publicacion
+      archivo
+
+    }
+  }
+`;
