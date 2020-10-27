@@ -47,11 +47,11 @@ export default function MisDatos({ navigation }) {
                     <View style={styles.form}>
                         <Formik
                             initialValues={{
-                                nombre_usuario: user.nombre_usuario,
-                                password: user.password,
+                                contrasena: user.password,
                                 nombres: user.nombres,
                                 email: user.email,
-                                rol: user.rol.id
+                                rol: user.rol.id,
+                                nombre_usuario: user.nombre_usuario
                             }}
                             onSubmit={(values) => {
                                 let user = {
@@ -61,7 +61,8 @@ export default function MisDatos({ navigation }) {
                                     email: values.email,
                                     rol: user.rol.id
                                 }
-                                editUser({ values:{id: user.rol, usuario: user}});
+                                console.log(values)
+                                editUser({ values: { id: user.rol.id, usuario: user } });
                             }}
 
                         >
