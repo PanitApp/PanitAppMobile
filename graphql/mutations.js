@@ -63,3 +63,26 @@ export const ADD_ESTUDIANTE = gql`
       crearEstudianteCurso(id_estudiante: $id_estudiante, id_curso: $id_curso)
   }
 `;
+
+export const ADD_MENSAJE = gql`
+  mutation crearMensaje($chat: String!, $contenido: String!,  $destacado: Boolean!, $fijado:Boolean!, $userId: Int! ) {
+    crearMensaje(mensaje:{
+      chat: $chat
+      contenido: $contenido
+      destacado: $destacado
+      fijado:$fijado
+      userId: $userId
+    }){
+      _id
+      fecha
+      contenido
+      destacado
+      fijado
+      usuario{
+        id
+        nombre_usuario
+        nombres
+      }
+    }
+  }
+`;
