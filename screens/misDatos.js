@@ -34,6 +34,12 @@ export default function MisDatos({ navigation }) {
         }
     })
 
+    const usuarioSchema = yup.object({
+        password: yup.string().required().min(8),
+        nombres: yup.string().required(),
+        email: yup.string().required().email("invalid email")
+    })
+
     return (
         <ImageBackground source={bgImage} style={styles.backgroundContainer}>
             <Content>
@@ -49,12 +55,14 @@ export default function MisDatos({ navigation }) {
                                 nombres: user.nombres,
                                 email: user.email
                             }}
+                            validationSchema={usuarioSchema}
                             onSubmit={( values ) => {
+                                console.log(values)
                                 editUser({
                                     variables: {
                                         id: user.id,
                                         usuario: {
-                                            contrasena: values.contrasena,
+                                            contrasena: values.password,
                                             nombres: values.nombres,
                                             email: values.email,
                                             rol: user.rol.id,
