@@ -120,6 +120,17 @@ export const GET_MENSAJES_BY_CHAT = gql`
         nombre_usuario
         nombres
       }
+}
+`;
+
+export const GET_ANUNCIOS_BY_CURSO_ID = gql`
+  query getAnunciosByCursoId($id_curso: ID!){
+    getAnunciosByCurso(id_curso:$id_curso){
+      id
+      descripcion
+      fecha_publicacion
+      archivo
+
     }
   }
 `;
