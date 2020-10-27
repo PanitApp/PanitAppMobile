@@ -27,6 +27,8 @@ export default function HomeScreen({ navigation }) {
   const { user, logout } = useContext(AuthContext)
   const { cursos, setCursos } = useContext(CursosContext)
 
+  console.log(user)
+  
   return (
     <Content>
       <Menu navigation={navigation} />

@@ -10,7 +10,6 @@ import Inicio from '../components/inicio'
 import { AuthContext } from '../context/authContext'
 import { NavigationContainer } from '@react-navigation/native';
 import { useWindowDimensions } from 'react-native';
-// import MisCursos from '../components/card'
 import MisCursos from './cursos'
 import CursosContextProvider from '../context/cursosContext';
 
