@@ -86,3 +86,19 @@ export const ADD_MENSAJE = gql`
     }
   }
 `;
+
+export const CREAR_CHAT = gql`
+  mutation crearChat($nombre: String!, $participantes: [Int]!) {
+    crearChat(chat: {
+      nombre: $nombre, 
+      participantes: $participantes
+    }){
+      _id
+      nombre
+      participantes{
+      id
+      nombre_usuario
+      }
+    }
+  }
+`;
