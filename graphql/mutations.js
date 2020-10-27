@@ -17,7 +17,7 @@ export const CREATE_USER = gql`
 `;
 
 export const CREAR_ANUNCIO = gql`
-    mutation crear_anuncio($descripcion: String!,$fecha_publicacion: String!, $archivo: String, $id_curso: Int!){
+    mutation crear_anuncio($descripcion: String!,$fecha_publicacion: DateTime!, $archivo: String, $id_curso: Int!){
         crearAnuncio(anuncio:{
           descripcion: $descripcion,
           fecha_publicacion: $fecha_publicacion,

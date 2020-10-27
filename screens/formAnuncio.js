@@ -20,11 +20,16 @@ export default function formAnuncio({ crearAnuncio, curso }) {
           descripcion: "",
           archivos: "archivos"
         }}
-        onSubmit={(values, actions) => {
-          console.log(anuncio)
+        onSubmit={ async (values, actions) => {
           actions.resetForm();
-          let anuncio = { descripcion: values.descripcion, fecha_publicacion: '2020-10-01T00:00:00.000Z', archivos: values.archivos, id_curso: curso.id }
-          crearAnuncio({ variables: anuncio })
+          let anuncio = {
+            descripcion: values.descripcion, 
+            fecha_publicacion: "2020-10-01T00:00:00.000Z",
+            archivo: "xd",
+            id_curso: curso.id 
+          };
+          console.log(anuncio)
+          await crearAnuncio({ variables: anuncio })
         }}
       >
         {(props) => (
