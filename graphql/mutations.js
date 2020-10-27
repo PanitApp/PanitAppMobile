@@ -57,6 +57,21 @@ export const CREATE_CURSO = gql`
   }
 `;
 
+export const EDIT_USER = gql`
+  mutation ($id: Int!, $usuario: RegisterInput){
+    actualizarUsuario(id: $id, usuario: $usuario){
+      id
+      nombre_usuario
+      contrasena
+      nombres
+      email
+      rol{
+        id,
+        nombre
+      }
+    }
+}
+`;
 
 export const ADD_ESTUDIANTE = gql`
   mutation crearEstudianteCurso($id_estudiante: ID!, $id_curso: ID!) {
