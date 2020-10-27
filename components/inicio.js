@@ -28,6 +28,8 @@ export default function HomeScreen({ navigation }) {
   const { cursos, setCursos } = useContext(CursosContext)
   const [active, setActive] = useState(false)
 
+  console.log(user)
+  
   return (
     <Content>
       <Menu navigation={navigation} />
