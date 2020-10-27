@@ -44,9 +44,12 @@ export const EDIT_USER = gql`
       contrasena
       nombres
       email
-      rol
+      rol{
+        id,
+        nombre
+      }
     }
-  }
+}
 `;
 
 export const ADD_ESTUDIANTE = gql`

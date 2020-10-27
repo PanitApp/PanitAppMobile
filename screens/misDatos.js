@@ -23,12 +23,10 @@ const usuarioSchema = yup.object({
 export default function MisDatos({ navigation }) {
 
     const { user, setUser } = useContext(AuthContext)
-    console.log(user)
     const [editUser] = useMutation(EDIT_USER, {
         onCompleted: (data) => {
-            console.log(data)
-            setOpenModal(false)
             setUser(data.actualizarUsuario)
+            console.log(user)
             navigation.navigate('Inicio')
         },
         onError: (err) => {
@@ -47,22 +45,23 @@ export default function MisDatos({ navigation }) {
                     <View style={styles.form}>
                         <Formik
                             initialValues={{
-                                contrasena: user.password,
+                                contrasena: user.contrasena,
                                 nombres: user.nombres,
-                                email: user.email,
-                                rol: user.rol.id,
-                                nombre_usuario: user.nombre_usuario
+                                email: user.email
                             }}
-                            onSubmit={(values) => {
-                                let user = {
-                                    nombre_usuario: user.nombre_usuario,
-                                    password: values.password,
-                                    nombres: values.nombres,
-                                    email: values.email,
-                                    rol: user.rol.id
-                                }
-                                console.log(values)
-                                editUser({ values: { id: user.rol.id, usuario: user } });
+                            onSubmit={( values ) => {
+                                editUser({
+                                    variables: {
+                                        id: user.id,
+                                        usuario: {
+                                            contrasena: values.contrasena,
+                                            nombres: values.nombres,
+                                            email: values.email,
+                                            rol: user.rol.id,
+                                            nombre_usuario: user.nombre_usuario
+                                        }
+                                    }
+                                });
                             }}
 
                         >

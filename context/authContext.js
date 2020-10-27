@@ -102,6 +102,7 @@ export default function AuthContextProvider( props ) {
         user: user,
         error: error,
         isLogged: isLogged,
+        setUser: setUser,
         login: (username, password) => {
             // retrive the user and set the state
             getUser({ variables: { nombre_usuario: username } })
