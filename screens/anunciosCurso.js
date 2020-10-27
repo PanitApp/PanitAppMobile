@@ -21,7 +21,6 @@ export default function anunciosCurso({ curso, navigation }) {
         onCompleted: (data) => {
             setOpenModal(false)
             setAnuncios([...anuncios, data.crearAnuncio])
-            navigation.navigate('anunciosCurso')
         },
         onError: (err) => {
             console.log(err)
@@ -34,13 +33,12 @@ export default function anunciosCurso({ curso, navigation }) {
         onError: err => console.log(err)
     })
 
-    console.log(anuncios)
+    // console.log(anuncios)
 
     return (
         <Container>
             <Content>
                 <Modal animationType="slide" visible={openModal}>
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                         <View>
                             <Button bordered onPress={() => setOpenModal(false)}>
                                 <Icon active name="close-circle" />
@@ -48,8 +46,8 @@ export default function anunciosCurso({ curso, navigation }) {
                             </Button>
                             <FormAnuncio crearAnuncio={crearAnuncio} curso={curso} />
                         </View>
-                    </TouchableWithoutFeedback>
                 </Modal>
+                
                 <View style={styles.logoContainer}>
                     <Image source={logo} style={styles.logo} />
                     <Text style={styles.title}>Anuncios</Text>

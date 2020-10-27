@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, TextInput, View, Text, Dimensions, TouchableOpacity } from 'react-native';
+import {Form, Item} from 'native-base'
 import { Formik } from 'formik';
 import * as yup from 'yup'
 
@@ -17,23 +18,22 @@ export default function formAnuncio({ crearAnuncio, curso }) {
         style={styles.form}
         validationSchema={validationSchema}
         initialValues={{
-          descripcion: "",
-          archivos: "archivos"
+          descripcion: ""
         }}
-        onSubmit={ async (values, actions) => {
+        onSubmit={(values, actions) => {
           actions.resetForm();
           let anuncio = {
             descripcion: values.descripcion, 
-            fecha_publicacion: "2020-10-01T00:00:00.000Z",
-            archivo: "xd",
-            id_curso: curso.id 
+            fecha_publicacion: new Date().toISOString(),
+            archivo: "",
+            id_curso: parseInt(curso.id)
           };
-          console.log(anuncio)
-          await crearAnuncio({ variables: anuncio })
+          crearAnuncio({ variables: anuncio })
         }}
       >
         {(props) => (
-          <View>
+          <Form>
+            
             <TextInput
               multiline
               style={styles.input}
@@ -42,6 +42,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
               onBlur={props.handleBlur('descripcion')}
               value={props.values.descripcion}
             />
+            
             <TouchableOpacity style={styles.btnLogin}>
               <Text style={styles.text}>
                 Añadir archivos
@@ -52,7 +53,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
                 Crear anuncio
               </Text>
             </TouchableOpacity>
-          </View>
+          </Form>
         )}
       </Formik>
     </View>
