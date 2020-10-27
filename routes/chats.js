@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerActions } from '@react-navigation/native';
-import { Button } from 'native-base';
+import { Button, Icon } from 'native-base';
 import Chats from '../screens/misChats'
 import Chat from '../screens/chat'
 

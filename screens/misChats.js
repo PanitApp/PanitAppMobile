@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Content, Body, Text, ListItem, Left, List, Thumbnail } from 'native-base';
+import { Content, Body, Text, ListItem, Left, List, Thumbnail, Icon } from 'native-base';
 import { StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
 import { useQuery } from '@apollo/client';
 import { GET_CHATS } from '../graphql/queries'
