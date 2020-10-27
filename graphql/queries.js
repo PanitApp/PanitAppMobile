@@ -120,7 +120,8 @@ export const GET_MENSAJES_BY_CHAT = gql`
         nombre_usuario
         nombres
       }
-}
+    }
+  }
 `;
 
 export const GET_ANUNCIOS_BY_CURSO_ID = gql`
