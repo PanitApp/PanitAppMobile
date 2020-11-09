@@ -135,3 +135,18 @@ export const GET_ANUNCIOS_BY_CURSO_ID = gql`
     }
   }
 `;
+
+export const GET_USUARIOS = gql`
+  query getUsuarios{
+    getUsuarios{
+      id
+    nombre_usuario
+    nombres
+    email
+    rol{
+      id
+      nombre
+    }
+    }
+  }
+`;

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Content, Body, Text, ListItem, Left, List, Thumbnail, Icon, CardItem, Input, Right, Button } from 'native-base';
+import { Content, Body, Text, ListItem, Left, List, Thumbnail, Icon, CardItem, Input, Right, Button, Item, Picker } from 'native-base';
 import { StyleSheet, Dimensions, ActivityIndicator } from 'react-native'
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
-import { GET_CHATS, GET_ESTUDIANTE } from '../graphql/queries'
+import { GET_CHATS, GET_ESTUDIANTE, GET_USUARIOS } from '../graphql/queries'
 import { AuthContext } from '../context/authContext';
 import { CREAR_CHAT } from '../graphql/mutations'
 
@@ -14,10 +14,18 @@ const { width: WIDTH } = Dimensions.get('window')
 export default function MisCursos({ navigation }) {
     const { user, logout } = useContext(AuthContext)
 
+    const [usuarios, setUsuarios] = useState([])
     const [chats, setChats] = useState([])
     const [newChatName, setNewChatName] = useState('')
     const [newChatUser, setNewChatUser] = useState('')
     const [err, setErr] = useState('')
+
+    const { loading2, error2 } = useQuery(GET_USUARIOS, {
+
+        onCompleted: (data) => {
+            setUsuarios(data.getUsuarios)
+        }
+    })
 
     const { loading, error } = useQuery(GET_CHATS, {
         variables: { userId: user.id },
@@ -26,7 +34,7 @@ export default function MisCursos({ navigation }) {
         }
     })
 
-    const [crearChat, _] = useMutation(CREAR_CHAT,{
+    const [crearChat, _] = useMutation(CREAR_CHAT, {
         onCompleted: (data) => {
             console.log(data)
         },
@@ -36,14 +44,14 @@ export default function MisCursos({ navigation }) {
     const [getUsuario] = useLazyQuery(GET_ESTUDIANTE, {
         onCompleted: async (data) => {
             let result = await crearChat({ variables: { participantes: [data.getUsuarioByUsername[0].id, user.id], nombre: newChatName } })
-             console.log('OK', result)
-             setChats([...chats, result.data.crearChat])
+            console.log('OK', result)
+            setChats([...chats, result.data.crearChat])
             // console.log('OK', data.getUsuarioByUsername[0])
         },
         onError: (err) => console.log(err)
     })
 
-    if (loading) return <ActivityIndicator />
+    if (loading) return <Text>Chat...</Text>
     if (error) return <Text>{console.log('error', error)}</Text>
 
     return (
@@ -55,16 +63,22 @@ export default function MisCursos({ navigation }) {
                         placeholderTextColor={'gray'}
                         onChangeText={val => setNewChatName(val)}
                     />
-                    <Input
-                        placeholder="Usuario"
-                        placeholderTextColor={'gray'}
-                        onChangeText={val => setNewChatUser(val)}
-                    />
+                    <Item picker>
+                        <Picker
+                            placeholderTextColor={'gray'}
+                            selectedValue={newChatUser}
+                            onValueChange={val => setNewChatUser(val)}
+                        > 
+                            {usuarios.map(usuario => {
+                                return <Picker.Item label={usuario.nombre_usuario} value={usuario.nombre_usuario} />
+                            })}
+                        </Picker>
+                    </Item>
 
                 </Body>
                 <Right>
                     <Button transparent block onPress={() => getUsuario({ variables: { nombre_usuario: newChatUser } })}>
-                        <Text>Enviar</Text>
+                        <Text>Crear</Text>
                         <Icon active name="arrow-dropright-circle" />
                     </Button>
                 </Right>
