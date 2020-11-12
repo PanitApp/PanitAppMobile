@@ -53,9 +53,8 @@ export default function MisCursos({ route }) {
                         </Body>
                         <Right>
                             <Button transparent block onPress={() => {
-                                 let mensaje = { contenido: newMensaje, chat: route.params.chat._id, userId: user.id, destacado: false, fijado: false }
-                                 console.log(mensaje)
-                                 addMensaje({variables: mensaje})
+                                let mensaje = { contenido: newMensaje, chat: route.params.chat._id, userId: user.id, destacado: false, fijado: false }
+                                addMensaje({ variables: mensaje })
                                 //addMensaje({ variables: { contenido: newMensaje, chat: route.params.chat._id, userId: user.id, destacado: false, fijado: false } })
                             }}
                             >
@@ -79,7 +78,7 @@ export default function MisCursos({ route }) {
                                         :
                                         <CardItem key={msg._id}>
                                             <Left>
-                                                <Text note style={styles.mensaje}>{msg.contenido}</Text>
+                                                <Text note style={styles.mensaje}>{msg.usuario.username}: {msg.contenido}</Text>
                                             </Left>
                                         </CardItem>
                                     : null

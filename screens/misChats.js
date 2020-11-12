@@ -18,35 +18,41 @@ export default function MisCursos({ navigation }) {
     const [chats, setChats] = useState([])
     const [newChatName, setNewChatName] = useState('')
     const [newChatUser, setNewChatUser] = useState('')
-    const [err, setErr] = useState('')
+    const [chatUsers, setChatUsers] = useState([])
+    const [msg, setMsg] = useState({
+        mensaje: '',
+        error: false
+    })
 
     const { loading2, error2 } = useQuery(GET_USUARIOS, {
 
         onCompleted: (data) => {
             setUsuarios(data.getUsuarios)
-        }
+        },
+        onError: (err) => console.log(err)
     })
 
     const { loading, error } = useQuery(GET_CHATS, {
         variables: { userId: user.id },
         onCompleted: (data) => {
             setChats(data.getChatByUser)
-        }
+        },
+        onError: (err) => console.log(user.id)
     })
 
     const [crearChat, _] = useMutation(CREAR_CHAT, {
         onCompleted: (data) => {
-            console.log(data)
+            setChats([...chats, data.crearChat])
+            setNewChatName('')
+            setChatUsers([])
+            setMsg('')
         },
         onError: (err) => console.log(err)
     })
 
     const [getUsuario] = useLazyQuery(GET_ESTUDIANTE, {
-        onCompleted: async (data) => {
-            let result = await crearChat({ variables: { participantes: [data.getUsuarioByUsername[0].id, user.id], nombre: newChatName } })
-            console.log('OK', result)
+        onCompleted: (data) => {
             setChats([...chats, result.data.crearChat])
-            // console.log('OK', data.getUsuarioByUsername[0])
         },
         onError: (err) => console.log(err)
     })
@@ -62,25 +68,49 @@ export default function MisCursos({ navigation }) {
                         placeholder="Nombre"
                         placeholderTextColor={'gray'}
                         onChangeText={val => setNewChatName(val)}
+                        value={newChatName}
                     />
                     <Item picker>
                         <Picker
                             placeholderTextColor={'gray'}
                             selectedValue={newChatUser}
                             onValueChange={val => setNewChatUser(val)}
-                        > 
-                            {usuarios.map(usuario => {
-                                return <Picker.Item label={usuario.nombre_usuario} value={usuario.nombre_usuario} />
-                            })}
+                        >
+                            {
+                                usuarios.filter(usuario => usuario.id != user.id).map(usuario => {
+                                    return <Picker.Item key={usuario.id} label={usuario.username} value={usuario.id} />
+                                })
+                            }
                         </Picker>
-                    </Item>
 
+                    </Item>
+                    <Text>{msg.mensaje}</Text>
+                    <Button transparent block onPress={() => {
+                        if (chatUsers.indexOf(newChatUser) === -1) {
+                            setChatUsers([...chatUsers, newChatUser])
+                            setMsg({ mensaje: 'Añadido correctamente', error: true })
+                        }
+                        else
+                            setMsg({ mensaje: 'Ya existe en el chat', error: false })
+                    }}>
+
+                        <Text>Añadir</Text>
+                        <Icon active name="add-circle" />
+                    </Button>
                 </Body>
                 <Right>
-                    <Button transparent block onPress={() => getUsuario({ variables: { nombre_usuario: newChatUser } })}>
-                        <Text>Crear</Text>
-                        <Icon active name="arrow-dropright-circle" />
-                    </Button>
+                    {
+                        chatUsers.length != 0 && newChatName != '' ?
+                            <Button transparent block onPress={() => crearChat({ variables: { participantes: chatUsers.concat([user.id]), nombre: newChatName } })}>
+                                <Text>Crear</Text>
+                                <Icon active name="arrow-dropright-circle" />
+                            </Button>
+                            :
+                            <Button transparent block disabled>
+                                <Text>Crear</Text>
+                                <Icon active name="arrow-dropright-circle" />
+                            </Button>
+                    }
                 </Right>
             </CardItem>
             <List>
@@ -106,7 +136,7 @@ export default function MisCursos({ navigation }) {
                                     <Text note> Chat con
                                         {
                                             chat.participantes.map(participante => {
-                                                return participante.nombre_usuario != user.nombre_usuario ? ' ' + participante.nombre_usuario : null
+                                                return participante.username != user.username ? ' ' + participante.username : null
                                             })
                                         }
                                     </Text>

@@ -7,31 +7,27 @@ export const HI = gql`
 `;
 
 export const GET_USER = gql`
-  query get_user($nombre_usuario: String!) {
-    getUsuarioByUsername(nombre_usuario:$nombre_usuario){
+  query get_user($username: String!) {
+    getUsuarioByUsername(username:$username){
       id
-      nombre_usuario
-      contrasena
-      nombres
+      username
+      first_name
+      last_name 
       email
-      rol{
-          id
-          nombre
-      }
+      rol
     }
   }
 `;
 
 export const GET_ESTUDIANTE = gql`
-  query get_estudiante($nombre_usuario: String!) {
-    getUsuarioByUsername(nombre_usuario:$nombre_usuario){
+  query get_estudiante($username: String!) {
+    getUsuarioByUsername(username:$username){
       id
-      nombre_usuario
-      nombres
+      username
+      first_name
+last_name 
       email    
-      rol{
-          id
-      }
+      rol
     }
   }
 `;
@@ -40,8 +36,9 @@ export const GET_ESTUDIANTES_BY_CURSO = gql`
   query getEstudiantesByCurso($id_curso: ID!) {
     getEstudiantesByCurso(id_curso: $id_curso){
       id
-      nombre_usuario
-      nombres
+      username
+      first_name
+      last_name 
       email    
     }
   }
@@ -55,8 +52,9 @@ export const GET_CURSOS = gql`
         descripcion
         profesor {
           id
-          nombre_usuario
-          nombres
+          username
+          first_name
+          last_name 
           email
         }
     }
@@ -71,8 +69,9 @@ export const GET_CURSOS_BY_ESTUDIANTE = gql`
       descripcion
       profesor{
         id
-        nombre_usuario
-        nombres
+        username
+        first_name
+        last_name 
         email
       }
     }
@@ -96,12 +95,10 @@ export const GET_CHATS = gql`
       nombre
       participantes{
         id
-        nombre_usuario
-        nombres
-        rol{
-          id
-          nombre
-        }
+        username
+        first_name
+        last_name 
+        rol
       }
     }
   }
@@ -117,8 +114,9 @@ export const GET_MENSAJES_BY_CHAT = gql`
       fijado
       usuario{
         id
-        nombre_usuario
-        nombres
+        username
+        first_name
+        last_name 
       }
     }
   }
@@ -140,13 +138,24 @@ export const GET_USUARIOS = gql`
   query getUsuarios{
     getUsuarios{
       id
-    nombre_usuario
-    nombres
-    email
-    rol{
-      id
-      nombre
+      username
+      first_name
+      last_name 
+      email
+      rol
     }
+  }
+`;
+
+export const GET_ESTUDIANTES = gql`
+  query getUsuariosByRol($rol: Rol!){
+    getUsuariosByRol(rol:$rol){
+      id
+      username
+      first_name
+      last_name 
+      email
+      rol
     }
   }
 `;

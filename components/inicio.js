@@ -28,7 +28,7 @@ export default function HomeScreen({ navigation }) {
   const { cursos, setCursos } = useContext(CursosContext)
   const [active, setActive] = useState(false)
 
-  console.log(user)
+
   
   return (
     <Content>
@@ -36,11 +36,9 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.backgroundColor}>
         <View style={{ backgroundColor: 'white', width: WIDTH - 30, alignItems: 'center', flex: 1 }}>
           <Text style={styles.title}>¡ Bienvenido !</Text>
-
+          <Text>{user.first_name}</Text>
+          <Text>{user.rol}</Text>
           <Image source={logo} style={styles.logo}></Image>
-
-          <Text>{user.nombres}</Text>
-          <Text>{user.rol.nombre}</Text>
 
           {/* CURSOS */}
           <Card style={{ width: WIDTH - 60 }}>

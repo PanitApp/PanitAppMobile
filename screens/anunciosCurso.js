@@ -33,7 +33,6 @@ export default function anunciosCurso({ curso, navigation }) {
         onError: err => console.log(err)
     })
 
-    // console.log(anuncios)
 
     return (
         <Container>

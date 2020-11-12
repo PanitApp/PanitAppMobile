@@ -1,17 +1,26 @@
 import { gql } from '@apollo/client';
 
+export const LOGIN = gql`
+    mutation ($username: String!, $password: String!){
+      login(input: {
+        username: $username 
+        password: $password
+      }){
+        access
+      }
+    }
+`;
+
 export const CREATE_USER = gql`
     mutation ($usuario: RegisterInput){
         crearUsuario(usuario: $usuario) {
             id
-            nombre_usuario
-            contrasena
-            nombres
+            username
+            password
+            first_name
+last_name 
             email
-            rol{
-                id
-                nombre
-            }
+            rol
         }
     }
 `;
@@ -49,8 +58,9 @@ export const CREATE_CURSO = gql`
         descripcion
         profesor {
           id
-          nombre_usuario
-          nombres
+          username
+          first_name
+last_name 
           email
         }
     }
@@ -61,14 +71,12 @@ export const EDIT_USER = gql`
   mutation ($id: Int!, $usuario: RegisterInput){
     actualizarUsuario(id: $id, usuario: $usuario){
       id
-      nombre_usuario
-      contrasena
-      nombres
+      username
+      password
+      first_name
+last_name 
       email
-      rol{
-        id,
-        nombre
-      }
+      rol
     }
 }
 `;
@@ -95,8 +103,9 @@ export const ADD_MENSAJE = gql`
       fijado
       usuario{
         id
-        nombre_usuario
-        nombres
+        username
+        first_name
+last_name 
       }
     }
   }
@@ -112,7 +121,7 @@ export const CREAR_CHAT = gql`
       nombre
       participantes{
       id
-      nombre_usuario
+      username
       }
     }
   }

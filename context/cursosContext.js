@@ -12,7 +12,7 @@ export default function CursosContextProvider(props) {
     const { user } = useContext(AuthContext)
     const [cursos, setCursos] = useState([])
 
-    if (user.rol.id == 1) {
+    if (user.rol == 'Profesor') {
         const { loading, error } = useQuery(GET_CURSOS_BY_PROFESOR, {
             variables: { id_profesor: user.id },
             onCompleted: (data) => {

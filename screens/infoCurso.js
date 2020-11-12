@@ -9,9 +9,6 @@ import logo from '../assets/Cursos.png'
 const { width: WIDTH } = Dimensions.get('window')
 
 export default function MisCursos(props) {
-    console.log(props.curso)
-
-    // const { curso } = route.params;
     return (
 
         <Container>

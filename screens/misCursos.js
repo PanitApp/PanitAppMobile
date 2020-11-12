@@ -41,7 +41,7 @@ export default function MisCursos({ navigation }) {
                 <Image source={logo} style={styles.logo} />
                 <Text style={styles.title}>Mis cursos</Text>
             </View>
-            {user.rol.id == 1 ?
+            {user.rol == 'Profesor' ?
                 <View>
                     <Body>
                         <Button primary onPress={() => setOpenModal(true)} style={styles.btn}>

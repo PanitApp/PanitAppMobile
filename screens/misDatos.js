@@ -13,7 +13,7 @@ import logo from '../assets/Calendario.png'
 const { width: WIDTH } = Dimensions.get('window')
 
 const usuarioSchema = yup.object({
-    nombre_usuario: yup.string().required().max(16),
+    username: yup.string().required().max(16),
     password: yup.string().required().min(8),
     nombres: yup.string().required(),
     email: yup.string().required().email("invalid email"),
@@ -26,7 +26,6 @@ export default function MisDatos({ navigation }) {
     const [editUser] = useMutation(EDIT_USER, {
         onCompleted: (data) => {
             setUser(data.actualizarUsuario)
-            console.log(user)
             navigation.navigate('Inicio')
         },
         onError: (err) => {
@@ -57,8 +56,8 @@ export default function MisDatos({ navigation }) {
                                             contrasena: values.contrasena,
                                             nombres: values.nombres,
                                             email: values.email,
-                                            rol: user.rol.id,
-                                            nombre_usuario: user.nombre_usuario
+                                            rol: user.rol,
+                                            username: user.username
                                         }
                                     }
                                 });
