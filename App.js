@@ -14,8 +14,10 @@ import { setContext } from '@apollo/client/link/context';
 
 import NavigatorDrawer from './routes/drawer'
 
+import firebase from './database/firebase';
+
 const httpLink = createHttpLink({
-  uri: 'http://ec2-3-235-223-5.compute-1.amazonaws.com:4000/',
+  uri: 'http://ec2-3-237-4-115.compute-1.amazonaws.com:4000/',
 });
 
 const authLink = setContext( async (_, { headers }) => {

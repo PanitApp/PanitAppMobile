@@ -1,12 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Text, Dimensions, TouchableOpacity } from 'react-native';
-import {Form, Item} from 'native-base'
+import { Form, Item } from 'native-base'
 import { Formik } from 'formik';
 import * as yup from 'yup'
+import firebase from '../database/firebase';
+import DocumentPicker from 'react-native-document-picker';
 
 const { width: WIDTH } = Dimensions.get('window')
 
+
 export default function formAnuncio({ crearAnuncio, curso }) {
+
+  //const [fileUrl, setFileUrl] = useState(null);
+  const [singleFile, setSingleFile] = useState(null);
+
+  const onFileChange = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = firebase.storage().ref();
+    const fileRef = storageRef.child(file.name);
+    await fileRef.put(file);
+    setFileUrl(await fileRef.getDownloadURL());
+  }
+
+  const selectFile = async () => {
+    // Opening Document Picker to select one file
+    try {
+      const res = await DocumentPicker.pick({
+        // Provide which type of file you want user to pick
+        type: [DocumentPicker.types.allFiles],
+      });
+      console.log('res : ' + JSON.stringify(res));
+      // Setting the state to show single file attributes
+      setSingleFile(res);
+    } catch (err) {
+      setSingleFile(null);
+      // Handling any exception (If any)
+      if (DocumentPicker.isCancel(err)) {
+        console.log(err)
+      } else {
+        console.log(err)
+        throw err;
+      }
+    }
+  };
 
   const validationSchema = yup.object({
     descripcion: yup.string().required()
@@ -23,7 +59,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
         onSubmit={(values, actions) => {
           actions.resetForm();
           let anuncio = {
-            descripcion: values.descripcion, 
+            descripcion: values.descripcion,
             fecha_publicacion: new Date().toISOString(),
             archivo: "",
             id_curso: parseInt(curso.id)
@@ -33,7 +69,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
       >
         {(props) => (
           <Form>
-            
+
             <TextInput
               multiline
               style={styles.input}
@@ -42,9 +78,9 @@ export default function formAnuncio({ crearAnuncio, curso }) {
               onBlur={props.handleBlur('descripcion')}
               value={props.values.descripcion}
             />
-            
+
             <TouchableOpacity style={styles.btnLogin}>
-              <Text style={styles.text}>
+              <Text style={styles.text} onPress={selectFile}>
                 Añadir archivos
               </Text>
             </TouchableOpacity>
