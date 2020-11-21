@@ -4,7 +4,7 @@ import { Form, Item } from 'native-base'
 import { Formik } from 'formik';
 import * as yup from 'yup'
 import firebase from '../database/firebase';
-import DocumentPicker from 'react-native-document-picker';
+import * as DocumentPicker from 'expo-document-picker';
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -25,10 +25,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
   const selectFile = async () => {
     // Opening Document Picker to select one file
     try {
-      const res = await DocumentPicker.pick({
-        // Provide which type of file you want user to pick
-        type: [DocumentPicker.types.allFiles],
-      });
+      const res = await DocumentPicker.getDocumentAsync({})
       console.log('res : ' + JSON.stringify(res));
       // Setting the state to show single file attributes
       setSingleFile(res);
