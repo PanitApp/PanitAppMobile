@@ -14,31 +14,38 @@ export default function formAnuncio({ crearAnuncio, curso }) {
   //const [fileUrl, setFileUrl] = useState(null);
   const [singleFile, setSingleFile] = useState(null);
 
-  const onFileChange = async (e) => {
-    const file = e.target.files[0];
-    const storageRef = firebase.storage().ref();
-    const fileRef = storageRef.child(file.name);
-    await fileRef.put(file);
-    setFileUrl(await fileRef.getDownloadURL());
-  }
-
   const selectFile = async () => {
     // Opening Document Picker to select one file
-    try {
-      const res = await DocumentPicker.getDocumentAsync({})
-      console.log('res : ' + JSON.stringify(res));
-      // Setting the state to show single file attributes
-      setSingleFile(res);
-    } catch (err) {
-      setSingleFile(null);
-      // Handling any exception (If any)
-      if (DocumentPicker.isCancel(err)) {
-        console.log(err)
-      } else {
-        console.log(err)
-        throw err;
-      }
-    }
+    const res = await DocumentPicker.getDocumentAsync({})
+    console.log('res : ' + JSON.stringify(res));
+    
+    // Why are we using XMLHttpRequest? See:
+    // https://github.com/expo/expo/issues/2402#issuecomment-443726662
+    const blob = await new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        resolve(xhr.response);
+      };
+      xhr.onerror = function(e) {
+        console.log(e);
+        reject(new TypeError('Network request failed'));
+      };
+      xhr.responseType = 'blob';
+      xhr.open('GET', res.uri, true);
+      xhr.send(null);
+    });
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(res.name);
+    const snapshot = await ref.put(blob);
+
+    // We're done with the blob, close and release it
+    blob.close();
+
+    let f = await snapshot.ref.getDownloadURL();
+    console.log(f)
+    setSingleFile(f)
   };
 
   const validationSchema = yup.object({
@@ -47,6 +54,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
 
   return (
     <View style={styles.container}>
+      <Text>{singleFile}</Text>
       <Formik
         style={styles.form}
         validationSchema={validationSchema}
