@@ -30,7 +30,8 @@ export default function anunciosCurso({ curso, navigation }) {
     const { loading } = useQuery(GET_ANUNCIOS_BY_CURSO_ID, {
         variables: { id_curso: curso.id },
         onCompleted: data => setAnuncios(data.getAnunciosByCurso),
-        onError: err => console.log(err)
+        onError: err => console.log(err),
+        FetchPolicy: 'no-cache'
     })
 
 
