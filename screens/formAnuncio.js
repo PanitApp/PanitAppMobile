@@ -19,56 +19,61 @@ export default function formAnuncio({ crearAnuncio, curso }) {
     setLoadingFile(true)
     // Opening Document Picker to select one file
     const res = await DocumentPicker.getDocumentAsync({})
-    // This is to get the blob of the file  
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function () {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function (e) {
-        setLoadingFile(false)
-        console.log(e);
-        reject(new TypeError('Network request failed'));
-      };
-      xhr.responseType = 'blob';
-      xhr.open('GET', res.uri, true);
-      xhr.send(null);
-    });
-
-    // this is to send the file to firebase
-    const ref = firebase
-      .storage()
-      .ref()
-      .child(curso.nombre + '/' + res.name);
-    const uploadTask = ref.put(blob)
-
-    uploadTask.on('state_changed', function (snapshot) {
-      // Observe state change events such as progress, pause, and resume
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      SetFileProgress(progress)
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED: // or 'paused'
-          console.log('Upload is paused');
-          break;
-        case firebase.storage.TaskState.RUNNING: // or 'running'
-          console.log('Upload is running');
-          break;
-      }
-    }, function (error) {
-      setFileName("")
-      setLoadingFile(false)
-      SetFileProgress(0)
-      console.log(error)
-    }, function () {
-      // Handle successful uploads on complete
-      blob.close();
-      uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-        setLoadingFile(false)
-        setSingleFile(downloadURL)
-        setFileName(res.name)
+    if (res.type == "success"){
+      // This is to get the blob of the file  
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function(e) {
+          setLoadingFile(false)
+          console.log(e);
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', res.uri, true);
+        xhr.send(null);
       });
-    });
+
+      // this is to send the file to firebase
+      const ref = firebase
+        .storage()
+        .ref()
+        .child(curso.nombre + '/' + res.name);
+      const uploadTask = ref.put(blob)
+
+      uploadTask.on('state_changed', function(snapshot){
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        SetFileProgress(progress)
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, function(error) {
+        setFileName("")
+        setLoadingFile(false)
+        SetFileProgress(0)
+        console.log(error)
+      }, function() {
+        // Handle successful uploads on complete
+        blob.close();
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          setLoadingFile(false)
+          setSingleFile(downloadURL)
+          setFileName(res.name)
+          Alert.alert("Archivo subido correctamente!")
+        });
+      });
+    }else{
+      setLoadingFile(false)
+    }
   };
 
   const validationSchema = yup.object({
