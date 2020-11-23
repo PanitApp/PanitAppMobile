@@ -19,21 +19,22 @@ export default function formAnuncio({ crearAnuncio, curso }) {
     setLoadingFile(true)
     // Opening Document Picker to select one file
     const res = await DocumentPicker.getDocumentAsync({})
-    // This is to get the blob of the file  
-    const blob = await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.onload = function() {
-        resolve(xhr.response);
-      };
-      xhr.onerror = function(e) {
-        setLoadingFile(false)
-        console.log(e);
-        reject(new TypeError('Network request failed'));
-      };
-      xhr.responseType = 'blob';
-      xhr.open('GET', res.uri, true);
-      xhr.send(null);
-    });
+    if (res.type == "success"){
+      // This is to get the blob of the file  
+      const blob = await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        xhr.onload = function() {
+          resolve(xhr.response);
+        };
+        xhr.onerror = function(e) {
+          setLoadingFile(false)
+          console.log(e);
+          reject(new TypeError('Network request failed'));
+        };
+        xhr.responseType = 'blob';
+        xhr.open('GET', res.uri, true);
+        xhr.send(null);
+      });
 
     // this is to send the file to firebase
     const ref = firebase
@@ -42,39 +43,41 @@ export default function formAnuncio({ crearAnuncio, curso }) {
       .child(curso.nombre + '/' + res.name);
     const uploadTask = ref.put(blob)
 
-    uploadTask.on('state_changed', function(snapshot){
-      // Observe state change events such as progress, pause, and resume
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      SetFileProgress(progress)
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED: // or 'paused'
-          console.log('Upload is paused');
-          break;
-        case firebase.storage.TaskState.RUNNING: // or 'running'
-          console.log('Upload is running');
-          break;
-      }
-    }, function(error) {
-      setFileName("")
-      setLoadingFile(false)
-      SetFileProgress(0)
-      console.log(error)
-    }, function() {
-      // Handle successful uploads on complete
-      blob.close();
-      uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+      uploadTask.on('state_changed', function(snapshot){
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        SetFileProgress(progress)
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, function(error) {
+        setFileName("")
         setLoadingFile(false)
-        setSingleFile(downloadURL)
-        console.log(downloadURL)
-        setFileName(res.name)
-        Alert.alert("Archivo subido correctamente!")
+        SetFileProgress(0)
+        console.log(error)
+      }, function() {
+        // Handle successful uploads on complete
+        blob.close();
+        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+          setLoadingFile(false)
+          setSingleFile(downloadURL)
+          setFileName(res.name)
+          Alert.alert("Archivo subido correctamente!")
+        });
       });
-    });
+    }else{
+      setLoadingFile(false)
+    }
   };
 
   const validationSchema = yup.object({
-    descripcion: yup.string().required()
+    descripcion: yup.string().required('Se requiere una descripcion')
   })
 
   return (
@@ -107,27 +110,28 @@ export default function formAnuncio({ crearAnuncio, curso }) {
               onBlur={props.handleBlur('descripcion')}
               value={props.values.descripcion}
             />
-            {loadingFile?(
-              <View> 
-                <Spinner />
-                <Text>Subiendo archivo: {fileProgress}</Text>
-              </View> 
-            ):(
+            {loadingFile ? (
               <View>
-                <Text>{FileName}</Text>
-                <TouchableOpacity style={styles.btnLogin}>
-                  <Text style={styles.text} onPress={selectFile}>
-                    Añadir archivo
-                  </Text>
-                  {/* <Icon name="upload" style={{ color: '#037E85' }} /> */}
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnLogin} disabled={loadingFile}>
-                  <Text style={styles.text} onPress={props.handleSubmit}>
-                    Crear anuncio
-                  </Text>
-                </TouchableOpacity>
+                <Spinner />
+                <Text>Subiendo archivo: {fileProgress.toFixed(2) + "%"}</Text>
               </View>
-            )}
+            ) : (
+                <View>
+                  <Text>{FileName ? "Archivo seleccionado: " + FileName : ''}</Text>
+                  <TouchableOpacity style={styles.btnLogin} >
+                    <Text style={styles.text} onPress={selectFile}>
+                      Añadir archivo
+                    </Text>
+                    {/* <Icon name="upload" style={{ color: '#037E85' }} /> */}
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.btnLogin} disabled={loadingFile}>
+                    <Text style={styles.text} onPress={props.handleSubmit}>
+                      Crear anuncio
+                    </Text>
+                  </TouchableOpacity>
+                  <Text style={styles.errorMessage}>{props.touched.descripcion && props.errors.descripcion}</Text>
+                </View>
+              )}
 
           </Form>
         )}
@@ -169,5 +173,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     fontSize: 16,
     margin: 5
+  },
+  errorMessage: {
+    color: 'red',
+    width: WIDTH,
+    marginLeft: 10
   }
 })
