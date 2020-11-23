@@ -82,7 +82,6 @@ export default function MisCursos({ curso }) {
                 <CardItem key={estudiante.id} >
                     <Icon active name="person" style={{ color: '#037E85' }} />
                     <Body>
-
                         <Text>
                             {estudiante.first_name}
                         </Text>

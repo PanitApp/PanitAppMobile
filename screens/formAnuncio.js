@@ -39,7 +39,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
     const ref = firebase
       .storage()
       .ref()
-      .child(res.name);
+      .child(curso.nombre + '/' + res.name);
     const uploadTask = ref.put(blob)
 
     uploadTask.on('state_changed', function(snapshot){
@@ -66,6 +66,7 @@ export default function formAnuncio({ crearAnuncio, curso }) {
       uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
         setLoadingFile(false)
         setSingleFile(downloadURL)
+        console.log(downloadURL)
         setFileName(res.name)
         Alert.alert("Archivo subido correctamente!")
       });

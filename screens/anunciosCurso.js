@@ -3,7 +3,7 @@ import FormAnuncio from './formAnuncio';
 import logo from '../assets/Cursos.png'
 
 import { Card, CardItem, Icon, Body, Button, Text, Content, Container } from 'native-base';
-import { Dimensions, TouchableWithoutFeedback, Keyboard, View, Modal, StyleSheet, Image} from 'react-native';
+import { Dimensions, TouchableWithoutFeedback, Keyboard, View, Modal, StyleSheet, Image, Linking} from 'react-native';
 
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ANUNCIOS_BY_CURSO_ID } from '../graphql/queries';
@@ -30,7 +30,8 @@ export default function anunciosCurso({ curso, navigation }) {
     const { loading } = useQuery(GET_ANUNCIOS_BY_CURSO_ID, {
         variables: { id_curso: curso.id },
         onCompleted: data => setAnuncios(data.getAnunciosByCurso),
-        onError: err => console.log(err)
+        onError: err => console.log(err),
+        fetchPolicy: 'no-cache'
     })
 
 
@@ -71,6 +72,15 @@ export default function anunciosCurso({ curso, navigation }) {
                             <Text style={globalStyles.cardItemTitle}> 
                                 Anuncio #{index + 1}: {anuncio.descripcion}
                             </Text>
+                            {anuncio.archivo != "" ? 
+                                <Icon 
+                                    active name="download" 
+                                    onPress={() => Linking.openURL(anuncio.archivo)}
+                                    style={{ color: '#013d40', fontSize: 17 }}
+                                > Ver archivo adjunto
+                                </Icon>
+                                : null
+                            }
                         </Body>
                     </CardItem>
                 ))}
